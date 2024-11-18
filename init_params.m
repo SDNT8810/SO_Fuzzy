@@ -38,6 +38,8 @@ Robot.m = m;
 Robot.Lidar_Range = Lidar_Range;
 Robot.X = X0;
 Robot.Xd = X0;
+Robot.Lidar_Range = -180:1:180;
+
 
 Robot_Sim = Robot;
 Robot_Sim.Window_Size = Window_Size;
@@ -56,6 +58,35 @@ Membership_Functions_Params = zeros(Number_of_Inputs, 2 * Number_of_Membership_F
 Gamma = 0.8;
 sample = Robot.X;
 
+Dist_MF_L2F = 30;
+Num_MF_L2F = 360/Dist_MF_L2F+1;
+% L2F_m = zeros(Num_MF_L2F,1);
+% L2F_s = zeros(Num_MF_L2F,1) + (Dist_MF_L2F/4)/sqrt(-2*log(0.5));
+% for i = 1:Num_MF_L2F
+%   L2F_m(i) = -180 + (i-1)*Dist_MF_L2F;
+%   MF_L2F = @(i,x) gaussmf(x,[L2F_s(i), L2F_m(i)]);
+% end
+Membership_Lidar = zeros(2*Dist_MF_L2F+1 , Num_MF_L2F);
+MF_Lidar_ = zeros(Num_MF_L2F, 1);
+
+MF_L2F(:,1) = gaussmf(-Dist_MF_L2F:Dist_MF_L2F , [(Dist_MF_L2F/4)/sqrt(-2*log(0.5)), 0]); 
+
+Lidar_Augmented = @(x) [x(end-Dist_MF_L2F:end,1); x; x(1:Dist_MF_L2F,1)];
+Max_Lidar = sum(Lidar_Range * MF_L2F);
+
+MF_Lidar = @(Points360) Lidar2Fuzzy(Points360, Lidar_Augmented, Membership_Lidar, MF_Lidar_, Dist_MF_L2F, Num_MF_L2F, MF_L2F, Max_Lidar);
+
+function o = Lidar2Fuzzy(Points360, Lidar_Augmented, Membership_Lidar, MF_Lidar_, Dist_MF_L2F, Num_MF_L2F, MF_L2F, Max_Lidar)
+  Y = Lidar_Augmented(Points360);
+  for j = 1:Num_MF_L2F
+    y = Y((j-1)*Dist_MF_L2F+1: (j+1)*Dist_MF_L2F+1);
+    Membership_Lidar(:,j) = MF_L2F.*y;
+    MF_Lidar_(j,1) = sum(Membership_Lidar(:,j));
+  end
+  o = MF_Lidar_/Max_Lidar;
+end
+
+
 %% Environmental Parameters
 X_Obstacles_0 = [1, 2
                  2, 5
@@ -66,6 +97,6 @@ X_Obstacles_0 = [1, 2
 X_Obstacles = zeros(size(X_Obstacles_0,1), 2, max_expected_size);
 X_Obstacles = X_Obstacles + X_Obstacles_0;
 X_Near_Obstacles = Obstacle_Is_Near([X(1,1),X(3,1)], X_Obstacles(:,:,1), Lidar_Range);
-
+Points360 = zeros(360,1);
 %%
 
