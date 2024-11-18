@@ -28,10 +28,10 @@ while 1
     if ( Run_Timer(Step_Counter) > T_f )
         break ;
     end
-    if  ( Dist2Goal(Step_Counter) < 0.2 ) 
-        T_b = Run_Timer(Step_Counter);
-        break ;
-    end 
+    % if  ( Dist2Goal(Step_Counter) < 0.2 ) 
+    %     T_b = Run_Timer(Step_Counter);
+    %     break ;
+    % end 
 end
 
 toc
