@@ -1,0 +1,41 @@
+clear;clc
+MeanMat = [];
+VariMat = [];
+Var0 = 1;
+RulesNum = 0;
+MF = @(X,l,i,M,S) gaussmf(X,[S, M]);
+function out = Antc(X,l,M,S,MF)
+  for i=1:length(X)
+    Ant(i) = MF(X(i),l,i,M(i,l),S(i,l));
+  end
+  out = prod(Ant);
+end
+
+for k = 1:50
+  X = rand(3,1)*3
+  
+  if RulesNum==0
+    disp('*********** No Existed Rule: Add the First Rule ************')
+    MeanMat(:,1) = X;
+    VariMat(:,1) = ones(length(X),1)*Var0;
+    RulesNum = 1;
+    Antcs(1) = Antc(X,1,MeanMat,VariMat,MF);
+  else
+    for j = 1:size(MeanMat,2)
+      Antcs(j) = Antc(X,j,MeanMat,VariMat,MF);
+    end
+    if max(Antcs)<0.5
+      disp('*********** No Enough Covering: Add a New Rule ************')
+      MeanMat(:,j+1) = X;
+      VariMat(:,j+1) = ones(length(X),1)*Var0;
+      RulesNum = RulesNum+1;
+      Antcs(j+1) = Antc(X,j+1,MeanMat,VariMat,MF);    
+    end
+  end
+
+  disp(['RulesNum : ',num2str(RulesNum)])
+  disp(['Max Covering : ', num2str(max(Antcs))])
+
+end
+
+
