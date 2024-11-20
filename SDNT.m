@@ -1,8 +1,12 @@
-clear; close all; clc;
+clear;
+% close all;
+% clf
+clc;
 
 %% initializing
-init_params;
 tic
+init_params
+
 
 %% live Loop
 while 1
@@ -35,4 +39,34 @@ while 1
 end
 
 toc
+% plot(Antcs)
+% x = 0:0.001:1;
+% for j = 1 : RulesNum
+%     clf
+%     for i = 1 : Num_MF_L2F
+%         pp(i,:) = gaussmf(x , [VariMat(i,j), MeanMat(i,j)]);
+%     end
+% 
+%     for i = 1 : Num_MF_L2F
+%         hold on
+%         plot(x,pp(i,:))
+%     end
+%     pause(0.4)
+% end
+% 
+% 
+% for j = 1 : Num_MF_L2F
+%     clf
+%     for i = 1 : RulesNum
+%         pp(i,:) = gaussmf(x , [VariMat(j,i), MeanMat(j,i)]);
+%     end
+% 
+%     for i = 1 : RulesNum
+%         hold on
+%         plot(pp(i,:))
+%     end
+%     pause(0.1)
+% end
+
+
 
