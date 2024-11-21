@@ -1,26 +1,31 @@
 MF_Lid = MF_Lidar(Points360);
 
+
+
+
+
+
 Goal_Vector(:,Step_Counter) = [X_g(Step_Counter,1) - X(Step_Counter,1);X_g(Step_Counter,3) - X(Step_Counter,2)];
-Goal_angle = 180 * atan2(Goal_Vector(1,Step_Counter),Goal_Vector(1,Step_Counter)) / pi;
+Goal_angle = atan2d(Goal_Vector(1,Step_Counter),Goal_Vector(1,Step_Counter))
+Goal_Direction = Goal_angle - Robot.Heading
 
 bell_size = 70;
 bell_coff = 3;
+L = 180;
 
-weighting_range = Goal_angle - 360 : Goal_angle + 360;
-weightingMF = gbellmf(weighting_range,[bell_size, bell_coff, Goal_angle]);
+% weighting_range = -L : +L;
+% weightingMF = gbellmf(weighting_range,[bell_size, bell_coff, 0]);
 
-weighting_range = Goal_angle - 360 : Goal_angle + 360;
-weightingMF = weightingMF + gbellmf(weighting_range,[bell_size, bell_coff, Goal_angle + 360]);
+Phi = MF_Lidar_Angle - Goal_Direction
 
-plweighting_range = Goal_angle - 360 : Goal_angle + 360;
-weightingMF = weightingMF + gbellmf(weighting_range,[bell_size, bell_coff, Goal_angle - 360]);
+PHI = Phi + (360*(Phi<-180)) + (-360*(Phi>180))
 
+weight_F = gbellmf(PHI,[bell_size, bell_coff, 0])
 
-MF_Lid(1) = 0
-weightingMF = 1 - 0.5 * (1 + MF_Lid(1)) * (1 - weightingMF); 
-plot(weighting_range/360,weightingMF)
-axis equal
-MF_Weghted = MF_Lid;
+Preference_MF = (weight_F*0.7+0.3)'.*(1-MF_Lid)
+
+polarplot([Preference_MF; Preference_MF(1)]);
+
 
 
 

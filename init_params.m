@@ -14,7 +14,7 @@ x_0 = 0;
 x_dot_0 = 0;
 y_0 = 0;
 y_dot_0 = 0;
-theta_0 = 0;
+theta_0 = 45;
 theta_dot_0 = 0;
 X0 = [x_0, x_dot_0, y_0, y_dot_0, theta_0, theta_dot_0]';
 
@@ -39,7 +39,7 @@ Robot.Lidar_Range = Lidar_Range;
 Robot.X = X0;
 Robot.Xd = X0;
 Robot.Lidar_Range = -180:1:180;
-
+Robot.Heading = theta_0;
 
 Robot_Sim = Robot;
 Robot_Sim.Window_Size = Window_Size;
@@ -59,8 +59,9 @@ Gamma = 0.8;
 sample = Robot.X;
 
 Dist_MF_L2F = 30;
+MF_Lidar_Angle = 0:Dist_MF_L2F:359;
 
-Num_MF_L2F = 360/Dist_MF_L2F+1;
+Num_MF_L2F = 360/Dist_MF_L2F;
 Membership_Lidar = zeros(2*Dist_MF_L2F+1 , Num_MF_L2F);
 MF_Lidar_ = zeros(Num_MF_L2F, 1);
 MF_L2F(:,1) = gaussmf(-Dist_MF_L2F:Dist_MF_L2F , [(Dist_MF_L2F/4)/sqrt(-2*log(0.5)), 0]); 
@@ -140,6 +141,5 @@ function out = Antc(X,l,M,S,MF)
   out = prod(Ant);
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 
