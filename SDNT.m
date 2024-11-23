@@ -9,7 +9,7 @@ init_params
 
 
 %% live Loop
-while 1
+while Step_Counter < max_expected_size
     Step_Counter = Step_Counter + 1;
     Run_Timer(Step_Counter) = toc;
 
@@ -36,6 +36,7 @@ while 1
     %     T_b = Run_Timer(Step_Counter);
     %     break ;
     % end 
+    % break
 end
 
 toc

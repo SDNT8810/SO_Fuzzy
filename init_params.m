@@ -59,7 +59,7 @@ Gamma = 0.8;
 sample = Robot.X;
 
 Dist_MF_L2F = 30;
-MF_Lidar_Angle = 0:Dist_MF_L2F:359;
+MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
 
 Num_MF_L2F = 360/Dist_MF_L2F;
 Membership_Lidar = zeros(2*Dist_MF_L2F+1 , Num_MF_L2F);
