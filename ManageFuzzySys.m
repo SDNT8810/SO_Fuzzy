@@ -14,8 +14,8 @@ else
         Antcs(i) = Antc(FuzzySysInputs,MeanMat(:,i),VariMat(:,i),MF);
     end
     if max(Antcs)<0.5
-        disp('*********** No Enough Covering: Add a New Rule ************')
-        RulesNum = RulesNum+1
+        disp(['*********** No Enough Covering: Add a New Rule, RulesNum = ', num2str(RulesNum) , ' ************'])
+        RulesNum = RulesNum+1;
         MeanMat(:,RulesNum) = FuzzySysInputs;
         VariMat(:,RulesNum) = ones(length(FuzzySysInputs),1)*Var0;
         W(RulesNum,1) = rand;

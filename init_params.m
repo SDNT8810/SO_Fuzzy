@@ -11,9 +11,9 @@ Window_Size = round(T_k / T_s);
 
 %% Initial State
 x_0 = 0;
-x_dot_0 = 2;
+x_dot_0 = 0.5;
 y_0 = 0;
-y_dot_0 = 2;
+y_dot_0 = 0.5;
 theta_0 = 70;
 theta_dot_0 = 0;
 X0 = [x_0, x_dot_0, y_0, y_dot_0, theta_0, theta_dot_0]';
@@ -78,23 +78,32 @@ W = [];
 RulesNum = 0;
 MF = @(X,M,S) gaussmf(X,[S, M]);
 
-
 %% Environmental Parameters
-map_rgb = imread('maps/star_300.png');
-subplot(2,2,[1,3])
-imshow(map_rgb);
-map_bin = imbinarize(map_rgb, 0.95);
-map = map_bin(:,:,1);
+Gazebo_Sim = 1;
 
-X_Obstacles_0 = [1, 2
-                 2, 5
-                 3, 6
-                 4, 2
-                 5, 1
-                 5, 8];
+if (Gazebo_Sim == 1)
+    Ros_Gazebo
+else
+    figure(1)
+    subplot(2,2,[1,3])
+    clf
+    map_rgb = imread('maps/star_300.png');
+    subplot(2,2,[1,3])
+    imshow(map_rgb);
+    map_bin = imbinarize(map_rgb, 0.95);
+    map = map_bin(:,:,1);
+end
 
-X_Obstacles = zeros(size(X_Obstacles_0,1), 2, max_expected_size);
-X_Obstacles = X_Obstacles + X_Obstacles_0;
-X_Near_Obstacles = Obstacle_Is_Near([X(1,1),X(3,1)], X_Obstacles(:,:,1), Lidar_Range);
 Points360 = zeros(360,1);
+
+% X_Obstacles_0 = [1, 2
+%                  2, 5
+%                  3, 6
+%                  4, 2
+%                  5, 1
+%                  5, 8];
+% 
+% X_Obstacles = zeros(size(X_Obstacles_0,1), 2, max_expected_size);
+% X_Obstacles = X_Obstacles + X_Obstacles_0;
+% X_Near_Obstacles = Obstacle_Is_Near([X(1,1),X(3,1)], X_Obstacles(:,:,1), Lidar_Range);
 

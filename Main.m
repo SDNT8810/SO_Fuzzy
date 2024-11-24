@@ -1,8 +1,5 @@
 clear;
 % close all;
-figure(1)
-subplot(2,2,[1,3])
-clf
 clc;
 
 %% initializing
@@ -21,25 +18,32 @@ while Step_Counter < max_expected_size
     % Path planner and controller algorythem
     ManageFuzzySys;
     kinodynamics;
-    
+
     % Simulation and sent commands to robot
     update_dynamic_parameters;
-    
-    % Run RL and update network 
+
+    % Run RL and update network
     learning_function;
-   
+
     % Replot and update GUIs
     update_presentation;
-    
+
     % End loop condition
     if ( Run_Timer(Step_Counter) > T_f )
         break ;
     end
-    if  ( Dist2Goal(Step_Counter) < 0.2 ) 
+    if  ( Dist2Goal(Step_Counter) < 0.2 )
         T_b = Run_Timer(Step_Counter);
         break ;
-    end 
+    end
 
+end
+
+% Publish velocity commands
+if (Gazebo_Sim == 1)
+    velMsg.linear.x = 0;
+    velMsg.angular.z = 0;
+    send(velPub,velMsg);
 end
 
 toc
@@ -51,21 +55,21 @@ toc
 %     for i = 1 : Num_MF_L2F
 %         pp(i,:) = gaussmf(x , [VariMat(i,j), MeanMat(i,j)]);
 %     end
-% 
+%
 %     for i = 1 : Num_MF_L2F
 %         hold on
 %         plot(x,pp(i,:))
 %     end
 %     pause(0.4)
 % end
-% 
-% 
+%
+%
 % for j = 1 : Num_MF_L2F
 %     clf
 %     for i = 1 : RulesNum
 %         pp(i,:) = gaussmf(x , [VariMat(j,i), MeanMat(j,i)]);
 %     end
-% 
+%
 %     for i = 1 : RulesNum
 %         hold on
 %         plot(pp(i,:))
