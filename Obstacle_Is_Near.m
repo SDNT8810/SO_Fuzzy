@@ -1,6 +1,4 @@
-
-function Near_Obstacles = Obstacle_Is_Near(Robot_Position, X_Obstacles, Lidar_Range)
-    
+function Near_Obstacles = Obstacle_Is_Near(Robot_Position, X_Obstacles, Lidar_Range)    
     I_max = length(X_Obstacles);
     dist = zeros(I_max,1);
     for i = 1 : I_max

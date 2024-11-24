@@ -7,9 +7,9 @@ clc;
 tic
 init_params
 
-
 %% live Loop
 while Step_Counter < max_expected_size
+
     Step_Counter = Step_Counter + 1;
     Run_Timer(Step_Counter) = toc;
 
@@ -17,7 +17,8 @@ while Step_Counter < max_expected_size
     update_environment_parameters;
 
     % Path planner and controller algorythem
-    MakingDecisions; 
+    ManageFuzzySys;
+    kinodynamics;
     
     % Simulation and sent commands to robot
     update_dynamic_parameters;
@@ -32,14 +33,16 @@ while Step_Counter < max_expected_size
     if ( Run_Timer(Step_Counter) > T_f )
         break ;
     end
-    % if  ( Dist2Goal(Step_Counter) < 0.2 ) 
-    %     T_b = Run_Timer(Step_Counter);
-    %     break ;
-    % end 
-    % break
+    if  ( Dist2Goal(Step_Counter) < 0.2 ) 
+        T_b = Run_Timer(Step_Counter);
+        break ;
+    end 
+
 end
 
 toc
+animation
+
 % plot(Antcs)
 % x = 0:0.001:1;
 % for j = 1 : RulesNum
