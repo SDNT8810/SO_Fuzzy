@@ -7,20 +7,41 @@ for i = 1 : h
     y(i) = X(3,i) ;  
     theta(i) = -X(5,i) ;  
 end
-map_x_max = max([x(h),11]);
-map_x_min = min([x(h),-2]);
-map_y_max = max([y(h),11]);
-map_y_min = min([y(h),-2]);
+map_x_max = max([x,X_g(1,1)]);
+map_x_min = min([x,-2]);
+map_y_max = max([y,X_g(2,1)]);
+map_y_min = min([y,-2]);
 map_margin = 1.2;
 map_axix = map_margin*[map_x_min map_x_max map_y_min map_y_max];
 t = linspace(0,2*pi,100);
 
-b = 0.7 ;
-c = 1;
-skipSize = 7;
-i = max(floor(h/skipSize)*skipSize,1);
+%% Lidar
+skipframe_Lidar = 1;
+i = max(floor(h/skipframe_Lidar)*skipframe_Lidar,1);
 if (i == h)
     figure(1)
+    subplot(2,2,2)
+    polarplot(Lidar_Range-[Points360;Points360(1)]);
+end
+
+%% Preference_MF
+skipframe_MF = 3;
+i = max(floor(h/skipframe_MF)*skipframe_MF,1);
+if (i == h)
+    figure(1)
+    subplot(2,2,4)
+    polarplot([Preference_MF; Preference_MF(1)]);
+end
+
+%% Map
+skipframe_map = 5;
+i = max(floor(h/skipframe_map)*skipframe_map,1);
+b = 7 ;
+c = Lidar_Range;
+
+if (i == h)
+    figure(1)
+    subplot(2,2,[1,3])
     axis(map_axix)
     hold on
 
@@ -70,4 +91,3 @@ if (i == h)
     plot(x,y) ;
     hold off
 end
-

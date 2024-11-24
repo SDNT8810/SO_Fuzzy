@@ -1,6 +1,6 @@
 
 %% Time and Counter Parameters
-T_s = 0.15;                     % Time step
+T_s = 0.05;                     % Time step
 T_f = 10;                       % Final Time
 T_b = 0;                        % Break Time
 T_k = 0.1;                        % Window Time
@@ -11,9 +11,9 @@ Window_Size = round(T_k / T_s);
 
 %% Initial State
 x_0 = 0;
-x_dot_0 = 0.2;
+x_dot_0 = 2;
 y_0 = 0;
-y_dot_0 = 0.2;
+y_dot_0 = 2;
 theta_0 = 70;
 theta_dot_0 = 0;
 X0 = [x_0, x_dot_0, y_0, y_dot_0, theta_0, theta_dot_0]';
@@ -23,7 +23,7 @@ Omega = theta_dot_0;
 
 %% Init State Recorder Matrixes
 X = X0 + zeros(length(X0), max_expected_size);
-X_g = [10;10;0] + zeros(3, max_expected_size);
+X_g = [300;300;0] + zeros(3, max_expected_size);
 Xd0 = [X_g(1), x_dot_0, X_g(2), y_dot_0, X_g(3), theta_dot_0]';
 Xd = Xd0 + zeros(length(X0), max_expected_size);
 Dist2Goal = dist2goal([X(1,1), X(3,1)],X_g) + zeros(1, max_expected_size);
@@ -32,7 +32,7 @@ Goal_Vector = zeros(2, max_expected_size);
 Goal_Vector_sim = zeros(2, Window_Size);
 
 %% Robot Parameters
-Lidar_Range = 5;
+Lidar_Range = 30;
 m = 2;
 Robot.m = m;
 Robot.Lidar_Range = Lidar_Range;
@@ -60,7 +60,7 @@ bell_size = 70;
 bell_coff = 3;
 sample = Robot.X;
 
-Dist_MF_L2F = 60;
+Dist_MF_L2F = 15;
 MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
 
 Num_MF_L2F = 360/Dist_MF_L2F;
@@ -80,8 +80,9 @@ MF = @(X,M,S) gaussmf(X,[S, M]);
 
 
 %% Environmental Parameters
-map_rgb = imread('maps/room_30.png');
-% imshow(map_rgb);
+map_rgb = imread('maps/star_300.png');
+subplot(2,2,[1,3])
+imshow(map_rgb);
 map_bin = imbinarize(map_rgb, 0.95);
 map = map_bin(:,:,1);
 

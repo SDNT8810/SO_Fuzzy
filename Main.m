@@ -1,6 +1,7 @@
 clear;
 % close all;
 figure(1)
+subplot(2,2,[1,3])
 clf
 clc;
 

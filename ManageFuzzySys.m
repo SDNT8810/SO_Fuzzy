@@ -15,7 +15,7 @@ else
     end
     if max(Antcs)<0.5
         disp('*********** No Enough Covering: Add a New Rule ************')
-        RulesNum = RulesNum+1;
+        RulesNum = RulesNum+1
         MeanMat(:,RulesNum) = FuzzySysInputs;
         VariMat(:,RulesNum) = ones(length(FuzzySysInputs),1)*Var0;
         W(RulesNum,1) = rand;
@@ -24,8 +24,8 @@ else
 end
 
 % disp(['RulesNum : ',num2str(RulesNum)])
-Fuzzy_Local_Direction_ref = ((180/pi) * (W'*Antcs) + 4*Goal_Direction)/5;
+Fuzzy_Local_Direction_ref = ((180/pi) * (W'*Antcs) + 9*Goal_Direction)/10;
 % Fuzzy_Local_Direction_ref = Goal_Direction;
-disp(['Fuzzy_Local_Direction_ref = ', num2str(Fuzzy_Local_Direction_ref)])
+% disp(['Fuzzy_Local_Direction_ref = ', num2str(Fuzzy_Local_Direction_ref)])
 
 

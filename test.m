@@ -1,5 +1,4 @@
-function Lidar_Points = Read_Lidar(X, X_g, Lidar_Range, map)
-    x = X(1);
+x = X(1);
     y = X(3);
     t = X(5);
     l = Lidar_Range;
@@ -30,6 +29,3 @@ function Lidar_Points = Read_Lidar(X, X_g, Lidar_Range, map)
         end
     end
     Lidar_Points = Points360;
-end
-
-
