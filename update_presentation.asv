@@ -2,21 +2,21 @@ h = Step_Counter ;
 x = zeros(1,h);
 y = zeros(1,h);
 theta = zeros(1,h);
+scale = 1;
 for i = 1 : h 
-    x(i) = X(1,i) ; 
-    y(i) = X(3,i) ;  
+    x(i) = scale * X(1,i) ; 
+    y(i) = scale * X(3,i) ;  
     theta(i) = -X(5,i) ;  
 end
-scale = max(x(h)/10,1.1);
+scale = 1 * scale;
 t = linspace(0,2*pi,100);
-
+figure(1)
+axis([-2*scale scale*12 -2*scale scale*12])
 b = 0.7 ;
 c = 1;
 skipSize = 7;
-i = max(floor(h/skipSize)*skipSize,1);
-if (i == h)
-    figure(1)
-    axis([-2*scale scale*12 -2*scale scale*12])
+i = max(floor(h/5)*5,1);
+
     hold on
 
     xw1=x(i)+b*sin(theta(i)-pi/2)-b*sin(theta(i));
@@ -62,7 +62,11 @@ if (i == h)
     % axis([-scale scale*11 -scale scale*11])
     xlabel('X')
     ylabel('Y')
-    plot(x,y) ;
     hold off
-end
+    pause(0.1);
+    
+
+hold on
+plot(x,y) ;
+hold off
 

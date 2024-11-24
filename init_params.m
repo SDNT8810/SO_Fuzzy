@@ -1,7 +1,7 @@
 
 %% Time and Counter Parameters
-T_s = 0.035;                     % Time step
-T_f = 2;                       % Final Time
+T_s = 0.15;                     % Time step
+T_f = 10;                       % Final Time
 T_b = 0;                        % Break Time
 T_k = 0.1;                        % Window Time
 max_expected_size = round(T_f / T_s);
@@ -60,7 +60,7 @@ bell_size = 70;
 bell_coff = 3;
 sample = Robot.X;
 
-Dist_MF_L2F = 30;
+Dist_MF_L2F = 60;
 MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
 
 Num_MF_L2F = 360/Dist_MF_L2F;

@@ -1,6 +1,7 @@
 clear;
 % close all;
-% clf
+figure(1)
+clf
 clc;
 
 %% initializing
@@ -41,7 +42,6 @@ while Step_Counter < max_expected_size
 end
 
 toc
-animation
 
 % plot(Antcs)
 % x = 0:0.001:1;

@@ -26,7 +26,8 @@ weight_MF = gbellmf(SaturatedPHI2Goal,[bell_size, bell_coff, 0]);
 
 Preference_MF = (weight_MF*0.7+0.3).*(1-MF_Lid);
 
-% polarplot([Preference_MF; Preference_MF(1)]);
+figure(2)
+polarplot([Preference_MF; Preference_MF(1)]);
 
 
 
