@@ -7,7 +7,12 @@ for i = 1 : h
     y(i) = X(3,i) ;  
     theta(i) = -X(5,i) ;  
 end
-scale = max(x(h)/10,1.1);
+map_x_max = max([x(h),11]);
+map_x_min = min([x(h),-2]);
+map_y_max = max([y(h),11]);
+map_y_min = min([y(h),-2]);
+map_margin = 1.2;
+map_axix = map_margin*[map_x_min map_x_max map_y_min map_y_max];
 t = linspace(0,2*pi,100);
 
 b = 0.7 ;
@@ -16,7 +21,7 @@ skipSize = 7;
 i = max(floor(h/skipSize)*skipSize,1);
 if (i == h)
     figure(1)
-    axis([-2*scale scale*12 -2*scale scale*12])
+    axis(map_axix)
     hold on
 
     xw1=x(i)+b*sin(theta(i)-pi/2)-b*sin(theta(i));
