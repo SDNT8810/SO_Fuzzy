@@ -3,8 +3,8 @@ TopicList=ros2("topic","list");
 NodeList=ros2("node","list");
 
 ScanNode = ros2node("/scan");
-OdomNode = ros2node("/turtlebot3_joint_state");
-ControllerNode = ros2node("/turtlebot3_diff_drive");
+OdomNode = ros2node("/odom");
+ControllerNode = ros2node("/odom");
 
 LaserSub = ros2subscriber(ScanNode,"/scan");
 pause(1);

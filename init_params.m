@@ -1,7 +1,7 @@
 
 %% Time and Counter Parameters
 T_s = 0.01;                     % Time step
-T_f = 20;                       % Final Time
+T_f = 10;                       % Final Time
 T_b = 0;                        % Break Time
 T_k = 0.1;                        % Window Time
 max_expected_size = round(T_f / T_s);
@@ -32,7 +32,7 @@ Goal_Vector = zeros(2, max_expected_size);
 Goal_Vector_sim = zeros(2, Window_Size);
 
 %% Robot Parameters
-Lidar_Range = 5;
+Lidar_Range = 30;
 m = 2;
 Robot.m = m;
 Robot.Lidar_Range = Lidar_Range;
@@ -89,9 +89,10 @@ else
     clf
     map_rgb = imread('maps/star_300.png');
     subplot(2,2,[1,3])
-    imshow(map_rgb);
     map_bin = imbinarize(map_rgb, 0.95);
     map = map_bin(:,:,1);
+    map = transpose(map);
+    imshow(map);
 end
 
 Points360 = zeros(360,1);

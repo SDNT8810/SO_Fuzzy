@@ -21,7 +21,8 @@ i = max(floor(h/skipframe_Lidar)*skipframe_Lidar,1);
 if (i == h)
     figure(1)
     subplot(2,2,2)
-    polarplot(Lidar_Range-[Points360;Points360(1)]);
+    % polarplot(Lidar_Range-[Points360;Points360(1)]);
+    polarplot([Points360;Points360(1)]);
 end
 
 %% Preference_MF
@@ -36,13 +37,13 @@ end
 %% Map
 skipframe_map = 7;
 i = max(floor(h/skipframe_map)*skipframe_map,1);
-b = 0.7 ;
-c = Lidar_Range/10;
+b = 1 ;
+c = Lidar_Range*1;
 
 if (i == h)
     figure(1)
     subplot(2,2,[1,3])
-    axis(map_axix)
+    % axis(map_axix)
     hold on
 
     xw1=x(i)+b*sin(theta(i)-pi/2)-b*sin(theta(i));
@@ -89,5 +90,6 @@ if (i == h)
     xlabel('X')
     ylabel('Y')
     plot(x,y) ;
+    drawnow; pause(0.01);
     hold off
 end
