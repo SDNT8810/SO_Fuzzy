@@ -4,9 +4,8 @@ clf;
 clc;
 
 %% initializing
-tic
 init_params
-
+tic
 %% live Loop
 while Step_Counter < max_expected_size
 

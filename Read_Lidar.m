@@ -1,10 +1,10 @@
-function Lidar_Points = Read_Lidar(X, X_g, Lidar_Range, map)
+function Lidar_Points = Read_Lidar(X, Lidar_Range, map)
     x = X(1);
     y = X(3);
     t = X(5);
-    l = Lidar_Range;
+    m2p = 100;
+    l = Lidar_Range * m2p;
     s = size(map);
-    m2p = s(1) / X_g(1);
     dl = l * m2p;
     rdl = floor(dl+1);
     map_Augmented = ones(2*rdl+s(1)+4,2*rdl+s(2)+4);

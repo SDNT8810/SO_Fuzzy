@@ -1,7 +1,7 @@
 
 %% Time and Counter Parameters
 T_s = 0.01;                     % Time step
-T_f = 10;                       % Final Time
+T_f = 80;                       % Final Time
 T_b = 0;                        % Break Time
 T_k = 0.1;                        % Window Time
 max_expected_size = round(T_f / T_s);
@@ -18,8 +18,8 @@ theta_0 = 70;
 theta_dot_0 = 0;
 X0 = [x_0, x_dot_0, y_0, y_dot_0, theta_0, theta_dot_0]';
 
-V = sqrt(x_dot_0^2 + y_dot_0^2);
-Omega = theta_dot_0;
+V = 0.3;
+Omega = 1;
 
 %% Init State Recorder Matrixes
 X = X0 + zeros(length(X0), max_expected_size);
@@ -32,7 +32,7 @@ Goal_Vector = zeros(2, max_expected_size);
 Goal_Vector_sim = zeros(2, Window_Size);
 
 %% Robot Parameters
-Lidar_Range = 30;
+Lidar_Range = 10;
 m = 2;
 Robot.m = m;
 Robot.Lidar_Range = Lidar_Range;
@@ -49,7 +49,7 @@ Robot_Sim.Xd_sim = Xd_sim;
 Number_of_Membership_Functions = 7;
 NMF = Number_of_Membership_Functions;
 Number_of_Rulls = 0;
-Max_Number_of_Rulls = 100;
+Max_Number_of_Rulls = 25;
 Number_of_Inputs = 6;    % ........
 Number_of_Outputs = 2;    
 W = zeros(Number_of_Rulls,Number_of_Outputs);
@@ -92,7 +92,15 @@ else
     map_bin = imbinarize(map_rgb, 0.95);
     map = map_bin(:,:,1);
     map = transpose(map);
+    m2p = 100;
+    l = Lidar_Range * m2p;
+    s = size(map);
+    s_local = 2 * l;
+    rl = floor(l+1);
+    map_frame = ones(2*l + s);
+    
     imshow(map);
+
 end
 
 Points360 = zeros(360,1);

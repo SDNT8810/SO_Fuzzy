@@ -26,16 +26,19 @@ if (i == h)
 end
 
 %% Preference_MF
-skipframe_MF = 3;
+skipframe_MF = 1;
 i = max(floor(h/skipframe_MF)*skipframe_MF,1);
 if (i == h)
     figure(1)
-    subplot(2,2,4)
-    polarplot([Preference_MF; Preference_MF(1)]);
+    subplot(2,2,4); 
+    % th = 1:360; 
+    % DD = zeros(1,360); DD(round(Fuzzy_Local_Direction_ref)+1) = 1; 
+    polarplot([Preference_MF; Preference_MF(1)]); 
+    % hold on; polarplot(th',DD'); hold off;
 end
 
 %% Map
-skipframe_map = 7;
+skipframe_map = 1;
 i = max(floor(h/skipframe_map)*skipframe_map,1);
 b = 1 ;
 c = Lidar_Range*1;
@@ -90,6 +93,7 @@ if (i == h)
     xlabel('X')
     ylabel('Y')
     plot(x,y) ;
+    title(['Time: ',num2str(Run_Timer(Step_Counter)), ', FLDR: ', num2str(Fuzzy_Local_Direction_ref)])
     drawnow; pause(0.01);
     hold off
 end
