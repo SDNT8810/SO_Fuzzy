@@ -6,6 +6,9 @@ https://github.com/ros-simulation/gazebo_ros_pkgs/wiki/ROS-2-Migration:-Spawn-an
 
  tfSub = ros2subscriber(node, '/tf', 'geometry_msgs/TransformStamped', @tfCallback);
 
+gazeboVMDevice = ros2device('192.168.192.129','user','password');
+gazeboVMDevice.AvailableNodes
+
 
  imgSub = ros2subscriber(n, "/camera/image_raw","sensor_msgs/Image","Reliability","besteffort","Durability","volatile","Depth",5);
 

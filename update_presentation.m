@@ -34,10 +34,10 @@ if (i == h)
 end
 
 %% Map
-skipframe_map = 5;
+skipframe_map = 7;
 i = max(floor(h/skipframe_map)*skipframe_map,1);
-b = 7 ;
-c = Lidar_Range;
+b = 0.7 ;
+c = Lidar_Range/10;
 
 if (i == h)
     figure(1)

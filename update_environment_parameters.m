@@ -14,8 +14,8 @@
 
 if (Gazebo_Sim == 1)
     Points360 = LaserSub.LatestMessage.ranges;
-    Points360(Points360==Inf) = 5;
-    Points360 = 6 * (5 - Points360);
+    Points360(Points360==Inf) = Lidar_Range;
+    Points360 = Lidar_Range - Points360;
 else
     Points360 = Read_Lidar(X(:,Step_Counter), X_g(:,Step_Counter), Lidar_Range, map);
 end

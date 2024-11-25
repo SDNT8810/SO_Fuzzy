@@ -5,7 +5,7 @@ Xd(1,Step_Counter) = X(1,Step_Counter) + V * cosd(Robot.Heading);
 Xd(2,Step_Counter) = X(3,Step_Counter) + V * sind(Robot.Heading);
 
 if (Gazebo_Sim == 1)
-    velMsg.linear.x = V;
+    velMsg.linear.x =  V;
     velMsg.angular.z = (pi/180) * Fuzzy_Local_Direction_ref;
     send(velPub,velMsg);
     X(1,Step_Counter+1) = odomSub.LatestMessage.pose.pose.position.x;

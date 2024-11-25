@@ -24,7 +24,7 @@ else
 end
 
 % disp(['RulesNum : ',num2str(RulesNum)])
-Fuzzy_Local_Direction_ref = ((180/pi) * (W'*Antcs) + 9*Goal_Direction)/10;
+Fuzzy_Local_Direction_ref = ((180/pi) * (W'*Antcs) + 1*Goal_Direction)/2;
 % Fuzzy_Local_Direction_ref = Goal_Direction;
 % disp(['Fuzzy_Local_Direction_ref = ', num2str(Fuzzy_Local_Direction_ref)])
 
