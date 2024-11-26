@@ -1,7 +1,7 @@
 
 %% Time and Counter Parameters
-T_s = 0.01;                     % Time step
-T_f = 80;                       % Final Time
+T_s = 0.001;                     % Time step
+T_f = 100;                       % Final Time
 T_b = 0;                        % Break Time
 T_k = 0.1;                        % Window Time
 max_expected_size = round(T_f / T_s);
@@ -14,16 +14,16 @@ x_0 = 0;
 x_dot_0 = 0.3;
 y_0 = 0;
 y_dot_0 = 0.3;
-theta_0 = 70;
+theta_0 = 0;
 theta_dot_0 = 0;
 X0 = [x_0, x_dot_0, y_0, y_dot_0, theta_0, theta_dot_0]';
 
-V = 0.3;
-Omega = 1;
+V = 0.5;
+Omega = 2 * pi;
 
 %% Init State Recorder Matrixes
 X = X0 + zeros(length(X0), max_expected_size);
-X_g = [2;2;0] + zeros(3, max_expected_size);
+X_g = [1.5;1.5;0] + zeros(3, max_expected_size);
 Xd0 = [X_g(1), x_dot_0, X_g(2), y_dot_0, X_g(3), theta_dot_0]';
 Xd = Xd0 + zeros(length(X0), max_expected_size);
 Dist2Goal = dist2goal([X(1,1), X(3,1)],X_g) + zeros(1, max_expected_size);
@@ -49,7 +49,7 @@ Robot_Sim.Xd_sim = Xd_sim;
 Number_of_Membership_Functions = 7;
 NMF = Number_of_Membership_Functions;
 Number_of_Rulls = 0;
-Max_Number_of_Rulls = 25;
+Max_Number_of_Rulls = 50;
 Number_of_Inputs = 6;    % ........
 Number_of_Outputs = 2;    
 W = zeros(Number_of_Rulls,Number_of_Outputs);
@@ -60,7 +60,7 @@ bell_size = 70;
 bell_coff = 3;
 sample = Robot.X;
 
-Dist_MF_L2F = 30;
+Dist_MF_L2F = 5;
 MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
 
 Num_MF_L2F = 360/Dist_MF_L2F;
@@ -73,19 +73,20 @@ MF_Lidar = @(Points360) Lidar2Fuzzy(Points360, Lidar_Augmented, Membership_Lidar
 
 MeanMat = [];
 VariMat = [];
-Var0 = 1;
+Var0 = 2;
 W = [];
 RulesNum = 0;
 MF = @(X,M,S) gaussmf(X,[S, M]);
-
+temp_w = 0;
 %% Environmental Parameters
 Gazebo_Sim = 1;
 
 if (Gazebo_Sim == 1)
     Ros_Gazebo
 else
-    figure(1)
-    subplot(2,2,[1,3])
+    Lidar_Range = 1;
+    figure(2)
+    % subplot(2,2,[1,3])
     clf
     map_rgb = imread('maps/star_300.png');
     subplot(2,2,[1,3])
@@ -98,7 +99,7 @@ else
     s_local = 2 * l;
     rl = floor(l+1);
     map_frame = ones(2*l + s);
-    
+   
     imshow(map);
 
 end

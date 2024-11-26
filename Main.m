@@ -1,5 +1,5 @@
 clear;
-close all;
+% close all;
 clf;
 clc;
 
@@ -9,7 +9,7 @@ tic
 %% live Loop
 while Step_Counter < max_expected_size
 
-    Step_Counter = Step_Counter + 1;
+    Step_Counter = Step_Counter + 1
     Run_Timer(Step_Counter) = toc;
 
     % Read simulation and environment parameters
@@ -22,7 +22,7 @@ while Step_Counter < max_expected_size
     kinodynamics;
 
     % Run RL and update network
-    learning_function;
+    % learning_function;
 
     % Replot and update GUIs
     update_presentation;
@@ -31,7 +31,7 @@ while Step_Counter < max_expected_size
     if ( Run_Timer(Step_Counter) > T_f )
         break ;
     end
-    if  ( Dist2Goal(Step_Counter) < 0.2 )
+    if  ( Dist2Goal(Step_Counter) < 0.1 )
         T_b = Run_Timer(Step_Counter);
         break ;
     end

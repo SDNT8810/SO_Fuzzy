@@ -3,8 +3,7 @@ FuzzySysInputs = [Preference_MF;Goal_Direction];
 % FuzzySysInputs = [rand(Num_MF_L2F,1)*1;Goal_Direction];
 
 [~, argmaxang] = max(Preference_MF);
-refang = MF_Lidar_Angle(argmaxang);% +rand*360;
-
+refang =  SaturatedPHI2Goal(argmaxang) + MF_Lidar_Angle(argmaxang);% +rand*360;
 % refang = MF_Lidar_Angle'*Preference_MF / sum(Preference_MF);
 
 if RulesNum==0
@@ -18,7 +17,7 @@ else
     for i = 1:RulesNum
         Antcs(i) = Antc(FuzzySysInputs,MeanMat(:,i),VariMat(:,i),MF);
     end
-    if (max(Antcs)<0.5 && RulesNum <= Max_Number_of_Rulls)
+    if (max(Antcs)<0.55 && RulesNum < Max_Number_of_Rulls)
         disp(['*********** No Enough Covering: Add a New Rule, RulesNum = ', num2str(RulesNum) , ' ************'])
         RulesNum = RulesNum+1;
         MeanMat(:,RulesNum) = FuzzySysInputs;
@@ -29,8 +28,10 @@ else
 end
 
 % disp(['RulesNum : ',num2str(RulesNum)])
-Fuzzy_Local_Direction_ref = (W'*Antcs)/sum(Antcs);
-% Fuzzy_Local_Direction_ref = ((180/pi) * (W'*Antcs) + 9*Goal_Direction)/10;
+
+% Fuzzy_Local_Direction_ref = (W'*Antcs)/max(abs(sum(Antcs)),0.001);
+
+Fuzzy_Local_Direction_ref = ((W'*Antcs)/sum(Antcs) + 2*Goal_Direction)/3;
 % Fuzzy_Local_Direction_ref = Goal_Direction;
 % disp(['Fuzzy_Local_Direction_ref = ', num2str(Fuzzy_Local_Direction_ref)])
 
