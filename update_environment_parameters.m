@@ -17,11 +17,10 @@ if (Gazebo_Sim == 1)
     Points360(Points360==Inf) = Lidar_Range;
     Points360 = Lidar_Range - Points360;
 else
-    
-    map_local = map;
-    px = rl + X(1,Step_Counter) * m2p;
-    py = rl + X(3,Step_Counter) * m2p;
-    Points360 = Read_Lidar(X(:,Step_Counter), Lidar_Range, map_local);
+    % px = rl + X(1,Step_Counter) * m2p;
+    % py = rl + X(3,Step_Counter) * m2p;
+    Points360 = Read_Lidar(X(:,Step_Counter), m2p, Lidar_Range, map_local);
+    Points360 = Lidar_Range - Points360;
 end
 
 Goal_Vector(:,Step_Counter) = [X_g(1,Step_Counter) - X(1,Step_Counter);X_g(2,Step_Counter) - X(3,Step_Counter)];

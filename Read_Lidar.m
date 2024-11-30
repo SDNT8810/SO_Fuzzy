@@ -1,30 +1,23 @@
-function Lidar_Points = Read_Lidar(X, Lidar_Range, map)
+function Lidar_Points = Read_Lidar(X, m2p, Lidar_Range, map)
     x = X(1);
     y = X(3);
     t = X(5);
-    m2p = 100;
-    l = Lidar_Range * m2p;
+    dl = floor(Lidar_Range * m2p);
     s = size(map);
-    dl = l * m2p;
-    rdl = floor(dl+1);
-    map_Augmented = ones(2*rdl+s(1)+4,2*rdl+s(2)+4);
-    map_Augmented(rdl+1:rdl+s(1),rdl+1:rdl+s(2)) = map .* map_Augmented(rdl+1:rdl+s(1),rdl+1:rdl+s(2));
-    px = rdl + x * m2p;
-    py = rdl + y * m2p;
-    Points360 = zeros(360,1);
+    px = x * m2p + 1;
+    py = y * m2p + 1;
+    Points360 = Lidar_Range * ones(360,1);
     for i = 1 : 360
         nt = t + i;
         for j =  1 : dl
-            nx = x + l * (j/dl) * cosd(nt);
-            ny = y + l * (j/dl) * sind(nt);
-            nxp = max(floor(rdl + nx * m2p),1);
-            nyp = max(floor(rdl + ny * m2p),1);
-            nxp = min(nxp,size(map_Augmented,1));
-            nyp = min(nyp,size(map_Augmented,2));
-            dxp = nxp - px;
-            dyp = nyp - py;
-            if (map_Augmented(nxp,nyp)==0) 
-                Points360(i) = (1 - j/dl) * l;
+            nx = round(px + j * cosd(nt));
+            ny = round(py + j * sind(nt));
+            if ((nx < 1) || (ny < 1) || (nx > s(1)) || (ny > s(2)))
+                Points360(i) = (j/dl) * Lidar_Range;
+                break
+            end
+            if (map(nx,ny)==0) 
+                Points360(i) = (j/dl) * Lidar_Range;
                 break
             end
         end

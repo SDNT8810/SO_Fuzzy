@@ -1,8 +1,8 @@
 
-% Robot.Heading = Robot.Heading + Fuzzy_Local_Direction_ref;
-% Robot.Heading  = (Robot.Heading  + (360*(Robot.Heading <-180)) + (-360*(Robot.Heading >180)));
-% Xd(1,Step_Counter) = X(1,Step_Counter) + V * cosd(Robot.Heading);
-% Xd(2,Step_Counter) = X(3,Step_Counter) + V * sind(Robot.Heading);
+Robot.Heading = Robot.Heading + Fuzzy_Local_Direction_ref;
+Robot.Heading  = (Robot.Heading  + (360*(Robot.Heading <-180)) + (-360*(Robot.Heading >180)));
+Xd(1,Step_Counter) = X(1,Step_Counter) + V * cosd(Robot.Heading);
+Xd(2,Step_Counter) = X(3,Step_Counter) + V * sind(Robot.Heading);
 
 if (Gazebo_Sim == 1)
     velMsg.linear.x =  V;

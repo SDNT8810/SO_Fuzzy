@@ -35,10 +35,10 @@ while Step_Counter < max_expected_size
         T_b = Run_Timer(Step_Counter);
         break ;
     end
-
+    pause(.01)
 end
 
-% Publish stop velocity commands
+%% Publish stop velocity commands
 if (Gazebo_Sim == 1)
     velMsg.linear.x = 0;
     velMsg.angular.z = 0;

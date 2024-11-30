@@ -29,9 +29,9 @@ end
 
 % disp(['RulesNum : ',num2str(RulesNum)])
 
-% Fuzzy_Local_Direction_ref = (W'*Antcs)/max(abs(sum(Antcs)),0.001);
+Fuzzy_Local_Direction_ref = (W'*Antcs)/max(abs(sum(Antcs)),0.001);
 
-Fuzzy_Local_Direction_ref = ((W'*Antcs)/sum(Antcs) + 2*Goal_Direction)/3;
+% Fuzzy_Local_Direction_ref = ((W'*Antcs)/sum(Antcs) + 2*Goal_Direction)/3;
 % Fuzzy_Local_Direction_ref = Goal_Direction;
 % disp(['Fuzzy_Local_Direction_ref = ', num2str(Fuzzy_Local_Direction_ref)])
 
