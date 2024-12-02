@@ -1,15 +1,14 @@
-clear;
-% close all;
-clf;
-clc;
 
 %% initializing
+clear; clf; clc; % close all;
+
 init_params
 tic
+
 %% live Loop
 while Step_Counter < max_expected_size
 
-    Step_Counter = Step_Counter + 1
+    Step_Counter = Step_Counter + 1;
     Run_Timer(Step_Counter) = toc;
 
     % Read simulation and environment parameters
@@ -31,11 +30,11 @@ while Step_Counter < max_expected_size
     if ( Run_Timer(Step_Counter) > T_f )
         break ;
     end
-    if  ( Dist2Goal(Step_Counter) < 0.1 )
+    if  ( Dist2Goal(Step_Counter) < 0.05 )
         T_b = Run_Timer(Step_Counter);
         break ;
     end
-    pause(.01)
+    % pause(.02)
 end
 
 %% Publish stop velocity commands

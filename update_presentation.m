@@ -1,8 +1,8 @@
 %% Define some parameters
 h = Step_Counter ;
 i = h ;
-x(i) = m2p * X(1,i); 
-y(i) = m2p * X(3,i);  
+x(i) = m2p * (X(1,i)); 
+y(i) = m2p * (X(3,i));  
 theta(i) = -X(5,i) ;  
 
 map_x_max = max([x,m2p * X_g(1,1)]);
@@ -52,9 +52,9 @@ if (i == h)
 end
 
 %% Map
-skipframe_map = 1;
+skipframe_map = 3;
 i = max(floor(h/skipframe_map)*skipframe_map,1);
-b = 5 ;
+b = 3 ;
 c = Lidar_Range*m2p;
 
 if (i == h)
@@ -86,7 +86,7 @@ if (i == h)
     line([xw6;xw1],[yw6;yw1],'color',[0.501960813999176 0.501960813999176 0.501960813999176])
 
 
-    % plot(c*sin(t)+(x(i)),c*cos(t)+y(i),':b','linewidth',1);
+    plot(c*sin(t)+(x(i)),c*cos(t)+y(i),':b','linewidth',1);
 
 
     % plot(0.2*sin(t)+XO1(i),0.2*cos(t)+YO1(i),':r','linewidth',1.5);
@@ -110,12 +110,12 @@ if (i == h)
     ylabel('Y')
     % plot(x,y) ;
     title(['Time: ',num2str(Run_Timer(Step_Counter)), ', FLDR: ', num2str(Fuzzy_Local_Direction_ref)])
-    drawnow; pause(0.01);
+    drawnow; pause(0.1);
     hold off
 end
 
 %% Report
-if (Gazebo_Sim == 1)
+if ((Gazebo_Sim == 1) && (Debug_Mode == 1))
     Debug_msg = 'Debug_Mode: ';
     Debug_msg = [Debug_msg, ' Heading = '];
     Debug_msg = [Debug_msg, num2str(Robot.Heading)];

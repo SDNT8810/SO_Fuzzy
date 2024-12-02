@@ -22,3 +22,19 @@ send(velPub,velMsg);
 x_0 = odomSub.LatestMessage.pose.pose.position.x;
 y_0 = odomSub.LatestMessage.pose.pose.position.y;
 
+
+MapNode = ros2node("/map");
+MapSub = ros2subscriber(MapNode,"/map");
+pause(0.5);
+map_data = MapSub.LatestMessage.data;
+map_matrix = reshape(map_data,[MapSub.LatestMessage.info.width,MapSub.LatestMessage.info.height]);
+% subplot(2,2,[1,3])
+% hold on
+% imshow(map_matrix);
+
+Map_metadata_Node = ros2node("/map_metadata");
+Map_metadata_Sub = ros2subscriber(Map_metadata_Node,"/map_metadata");
+% map_metadata_data = Map_metadata_Sub.LatestMessage.
+% map_metadata_matrix = reshape(map_metadata_data,[Map_metadata_Sub.LatestMessage.width,Map_metadata_Sub.LatestMessage.height]);
+% imshow(map_metadata_matrix)
+
