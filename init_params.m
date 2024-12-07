@@ -4,7 +4,7 @@ Gazebo_Sim = 0;
 
 %% Time and Counter Parameters
 T_s = 0.05;                     % Time step
-T_f = 30;                       % Final Time
+T_f = 100;                       % Final Time
 T_b = 0;                        % Break Time
 Window_Size = 10;
 Step_Counter = 0;
@@ -14,7 +14,7 @@ T_k = Window_Size * T_s;                  % Window Time
 t = linspace(0,2*pi,50);
 
 %% Initial State
-V = 0.3;
+V = 0.2;
 Omega = 1.5 * pi;
 x_0 = .1;
 x_dot_0 = V;
@@ -26,7 +26,7 @@ X0 = [x_0, x_dot_0, y_0, y_dot_0, theta_0, theta_dot_0]';
 
 %% Init State Recorder Matrixes
 X = X0 + zeros(length(X0), max_expected_size);
-X_g = [1.3;1.9;0] + zeros(3, max_expected_size);
+X_g = [1.0;1.0;0] + zeros(3, max_expected_size);
 Xd0 = [X_g(1), x_dot_0, X_g(2), y_dot_0, X_g(3), theta_dot_0]';
 Xd = Xd0 + zeros(length(X0), max_expected_size);
 Dist2Goal = dist2goal([X(1,1), X(3,1)],X_g) + zeros(1, max_expected_size);
@@ -35,7 +35,7 @@ Goal_Vector = zeros(2, max_expected_size);
 Goal_Vector_sim = zeros(2, Window_Size);
 
 %% Robot Parameters
-Lidar_Range = 0.5;
+Lidar_Range = 0.25;
 m = 2;
 Robot.m = m;
 Robot.Lidar_Range = Lidar_Range;
@@ -52,7 +52,7 @@ Robot_Sim.Xd_sim = Xd_sim;
 Number_of_Membership_Functions = 7;
 NMF = Number_of_Membership_Functions;
 Number_of_Rulls = 0;
-Max_Number_of_Rulls = 50;
+Max_Number_of_Rulls = 150;
 Number_of_Inputs = 6;    % ........
 Number_of_Outputs = 2;    
 W = zeros(Number_of_Rulls,Number_of_Outputs);
@@ -63,7 +63,7 @@ bell_size = 70;
 bell_coff = 3;
 sample = Robot.X;
 
-Dist_MF_L2F = 5;
+Dist_MF_L2F = 30;
 MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
 
 Num_MF_L2F = 360/Dist_MF_L2F;
@@ -81,6 +81,7 @@ W = [];
 RulesNum = 0;
 MF = @(X,M,S) gaussmf(X,[S, M]);
 temp_w = 0;
+gamma = 0.9;
 
 %% Environmental Parameters
 if (Gazebo_Sim == 1)

@@ -2,9 +2,13 @@
 FuzzySysInputs = [Preference_MF;Goal_Direction];
 
 [~, argmaxang] = max(Preference_MF);
-refang =  SaturatedPHI2Goal(argmaxang) + MF_Lidar_Angle(argmaxang);% +rand*360;
+saturated_MF_Lidar_Angle = (MF_Lidar_Angle + (360*(MF_Lidar_Angle<-180)) + (-360*(MF_Lidar_Angle>180)));
+
+refang =  SaturatedPHI2Goal(argmaxang) + saturated_MF_Lidar_Angle(argmaxang);% +rand*360;
+refang = refang / 180;
 % refang = MF_Lidar_Angle'*Preference_MF / sum(Preference_MF);
 
+%% add New Rull
 if RulesNum==0
     disp('*********** No Existed Rule: Add the First Rule ************')
     MeanMat(:,1) = FuzzySysInputs;
@@ -16,7 +20,7 @@ else
     for i = 1:RulesNum
         Antcs(i) = Antc(FuzzySysInputs,MeanMat(:,i),VariMat(:,i),MF);
     end
-    if (max(Antcs)<0.5 && RulesNum < Max_Number_of_Rulls)
+    if (max(Antcs)<gamma && RulesNum < Max_Number_of_Rulls)
         disp(['*********** No Enough Covering: Add a New Rule, RulesNum = ', num2str(RulesNum) , ' ************'])
         RulesNum = RulesNum+1;
         MeanMat(:,RulesNum) = FuzzySysInputs;
@@ -26,15 +30,20 @@ else
     end
 end
 
-% disp(['RulesNum : ',num2str(RulesNum)])
+%% Eliminate Rulls
+if RulesNum > 1
+    % check similarity
+    
+end
 
-W = (W + (360*(W<-180)) + (-360*(W>180)));
+% disp(['RulesNum : ',num2str(RulesNum)])
+W = (W + (2*(W<-1)) + (-2*(W>1)));
 
 
 if sum(Antcs) == 0
     Fuzzy_Local_Direction_ref = 0;
 else
-    Fuzzy_Local_Direction_ref = (W'*Antcs)/abs(sum(Antcs));
+    Fuzzy_Local_Direction_ref = 180 * (W'*Antcs)/abs(sum(Antcs));
 end
 
 % Fuzzy_Local_Direction_ref = ((W'*Antcs)/sum(Antcs) + 2*Goal_Direction)/3;
