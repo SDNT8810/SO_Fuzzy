@@ -10,6 +10,7 @@ while Step_Counter < max_expected_size
 
     Step_Counter = Step_Counter + 1;
     Run_Timer(Step_Counter) = toc;
+    
 
     % Read simulation and environment parameters
     update_environment_parameters;
@@ -30,7 +31,7 @@ while Step_Counter < max_expected_size
     if ( Run_Timer(Step_Counter) > T_f )
         break ;
     end
-    if  ( Dist2Goal(Step_Counter) < 0.05 )
+    if  ( Dist2Goal(Step_Counter) < 0.1 )
         T_b = Run_Timer(Step_Counter);
         break ;
     end

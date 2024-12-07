@@ -7,7 +7,7 @@ saturated_MF_Lidar_Angle = (MF_Lidar_Angle + (360*(MF_Lidar_Angle<-180)) + (-360
 
 refang =  SaturatedPHI2Goal(argmaxang) + saturated_MF_Lidar_Angle(argmaxang);% +rand*360;
 refang = refang / 180;
-V = (2*V + 0.3 * (1-MF_Lid_near(argmaxang)))/3;
+V = (9*V + 0.3 * (1-MF_Lid_near(argmaxang)))/10
 % refang = MF_Lidar_Angle'*Preference_MF / sum(Preference_MF);
 
 %% add New Rull
