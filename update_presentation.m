@@ -3,7 +3,7 @@ h = Step_Counter ;
 i = h ;
 x(i) = m2p * (X(1,i)); 
 y(i) = m2p * (X(3,i));  
-theta(i) = -X(5,i) ;  
+theta(i) = -X(5,i)*pi/180 ;  
 
 map_x_max = max([x,m2p * X_g(1,1)]);
 map_x_min = min([x,-2 * m2p]);
@@ -109,8 +109,8 @@ if (i == h)
     xlabel('X')
     ylabel('Y')
     % plot(x,y) ;
-    title(['Time: ',num2str(Run_Timer(Step_Counter)), ', FLDR: ', num2str(Fuzzy_Local_Direction_ref)])
-    drawnow; pause(0.1);
+    title(['Time: ',num2str(T_s*Step_Counter), ', FLDR: ', num2str(Fuzzy_Local_Direction_ref)])
+    drawnow;% pause(0.001);
     hold off
 end
 

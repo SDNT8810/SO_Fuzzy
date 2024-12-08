@@ -88,7 +88,7 @@ W = (W + (2*(W<-1)) + (-2*(W>1)));
 if sum(Antcs) == 0
     Fuzzy_Local_Direction_ref = 0;
 else
-    Fuzzy_Local_Direction_ref = 180 * (W'*Antcs)/abs(sum(Antcs));
+    Fuzzy_Local_Direction_ref = ElavFuz(W,Antcs);
 end
 
 % Fuzzy_Local_Direction_ref = ((W'*Antcs)/sum(Antcs) + 2*Goal_Direction)/3;

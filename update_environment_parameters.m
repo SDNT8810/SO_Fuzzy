@@ -30,4 +30,3 @@ Preference_MF = Preference_MF / max(Preference_MF);
 Preference_MF_near = Preference_MF_near / max(Preference_MF_near);
 
 
-dist2goal(X,X_g(:,Step_Counter));

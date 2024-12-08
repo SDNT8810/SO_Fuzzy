@@ -6,7 +6,7 @@ Gazebo_Sim = 0;
 T_s = 0.05;                     % Time step
 T_f = 100;                       % Final Time
 T_b = 0;                        % Break Time
-Window_Size = 10;
+Window_Size = 5;
 Step_Counter = 0;
 max_expected_size = round(T_f / T_s);
 Run_Timer = zeros(max_expected_size,1);   % Time vector
@@ -15,7 +15,7 @@ t = linspace(0,2*pi,50);
 
 %% Initial State
 V = 0.2;
-Omega = 10 * pi;
+Omega = 4 * pi;
 x_0 = .1;
 x_dot_0 = V;
 y_0 = .1;
@@ -80,6 +80,8 @@ Var0 = 1.5;
 W = [];
 RulesNum = 0;
 MF = @(X,M,S) gaussmf(X,[S, M]);
+ElavFuz = @(W,Antcs) 180 * (W'*Antcs)/abs(sum(Antcs));
+
 temp_w = 0;
 gamma = 0.7;
 min_gamma = 0.4;

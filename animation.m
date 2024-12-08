@@ -60,7 +60,7 @@ for i = 2 : 2 : h-1
     xlabel('X')
     ylabel('Y')
     hold off
-    pause(0.1);
+    % pause(0.1);
     
 end
 

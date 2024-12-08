@@ -6,7 +6,7 @@ init_params
 tic
 
 %% live Loop
-while Step_Counter < max_expected_size
+while Step_Counter < max_expected_size-Window_Size
 
     Step_Counter = Step_Counter + 1;
     Run_Timer(Step_Counter) = toc;
@@ -22,7 +22,7 @@ while Step_Counter < max_expected_size
     kinodynamics;
 
     % Run RL and update network
-    % learning_function;
+    learning_proccess;
 
     % Replot and update GUIs
     update_presentation;
