@@ -31,7 +31,7 @@ while Step_Counter < max_expected_size
     if ( Run_Timer(Step_Counter) > T_f )
         break ;
     end
-    if  ( Dist2Goal(Step_Counter) < 0.1 )
+    if  ( Dist2Goal(Step_Counter) < 0.05 )
         T_b = Run_Timer(Step_Counter);
         break ;
     end

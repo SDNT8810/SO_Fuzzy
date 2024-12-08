@@ -1,6 +1,6 @@
 
 % FuzzySysInputs = [Preference_MF;Goal_Direction/360;dist2goal(X,X_g(:,Step_Counter))/2;Robot.Heading/180];
-FuzzySysInputs = [Preference_MF_near;Preference_MF;Goal_Direction/360;dist2goal(X,X_g(:,Step_Counter))/2];
+FuzzySysInputs = [Preference_MF_near;Preference_MF;Goal_Direction/180;dist2goal(X,X_g(:,Step_Counter));Robot.Heading/180];
 
 [~, argmaxang] = max(Preference_MF);
 saturated_MF_Lidar_Angle = (MF_Lidar_Angle + (360*(MF_Lidar_Angle<-180)) + (-360*(MF_Lidar_Angle>180)));
