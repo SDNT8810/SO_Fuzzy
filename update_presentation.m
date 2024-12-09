@@ -23,7 +23,13 @@ if (i == h)
         Points360Plot(i) = Points360(1+length(Points360)-i);
     end
     polarplot(Lidar_Range-[Points360Plot;Points360Plot(1)]);
-    % polarplot([Points360Plot;Points360Plot(1)]);
+    hold on;
+    Points360Plot = zeros(length(Points360_near),1);
+    for i = 1 : length(Points360_near)
+        Points360Plot(i) = Points360_near(1+length(Points360_near)-i);
+    end
+    polarplot(Lidar_Range_near-[Points360Plot;Points360Plot(1)]);
+    hold off;
 end
 
 %% path
@@ -56,6 +62,7 @@ skipframe_map = 3;
 i = max(floor(h/skipframe_map)*skipframe_map,1);
 b = 3 ;
 c = Lidar_Range*m2p;
+c_near = Lidar_Range_near*m2p;
 
 if (i == h)
     % figure(2)
@@ -76,8 +83,6 @@ if (i == h)
     xw6=x(i)-b/2*sin(theta(i)-pi/2)-b*sin(theta(i));
     yw6=y(i)-b/2*cos(theta(i)-pi/2)-b*cos(theta(i));
 
-
-
     line([xw1;xw2],[yw1;yw2],'color',[0.501960813999176 0.501960813999176 0.501960813999176])
     line([xw2;xw3],[yw2;yw3],'color',[0.501960813999176 0.501960813999176 0.501960813999176])
     line([xw3;xw4],[yw3;yw4],'color',[0.501960813999176 0.501960813999176 0.501960813999176])
@@ -85,27 +90,9 @@ if (i == h)
     line([xw5;xw6],[yw5;yw6],'color',[0.501960813999176 0.501960813999176 0.501960813999176])
     line([xw6;xw1],[yw6;yw1],'color',[0.501960813999176 0.501960813999176 0.501960813999176])
 
+    plot(c*sin(t)+(x(i)),c*cos(t)+y(i),':b','linewidth',0.8);
+    plot(c_near*sin(t)+(x(i)),c_near*cos(t)+y(i),':r','linewidth',0.8);
 
-    plot(c*sin(t)+(x(i)),c*cos(t)+y(i),':b','linewidth',1);
-
-
-    % plot(0.2*sin(t)+XO1(i),0.2*cos(t)+YO1(i),':r','linewidth',1.5);
-    % plot(0.2*sin(t)+XO2(i),0.2*cos(t)+YO2(i),':r','linewidth',1.5);
-    % plot(0.2*sin(t)+XO3(i),0.2*cos(t)+YO3(i),'-r','linewidth',1.5);
-    % plot(0.2*sin(t)+XO4(i),0.2*cos(t)+YO4(i),'-r','linewidth',1.5);
-    % 
-    % plot(0.4*sin(t)+XO1(i),0.4*cos(t)+YO1(i),':g','linewidth',1);
-    % plot(0.4*sin(t)+XO2(i),0.4*cos(t)+YO2(i),':g','linewidth',1);
-    % plot(0.4*sin(t)+XO3(i),0.4*cos(t)+YO3(i),':g','linewidth',1);
-    % plot(0.4*sin(t)+XO4(i),0.4*cos(t)+YO4(i),':g','linewidth',1);
-
-    % plot(0.2*sin(t)+XB(i),0.2*cos(t)+YB(i),'-g','linewidth',1.5);
-    % plot(0.7*sin(t)+XB(i),0.7*cos(t)+YB(i),':g','linewidth',1);
-%     line([x(i);9*(x(i+1))-(8*x(i))],[(y(i));9*(y(i+1))-8*(y(i))],'color',[0 0 0],'linewidth',2)
-
-    % line([x(i);4*(x(i+1))-(3*x(i))],[(y(i));4*(y(i+1))-3*(y(i))],'color',[0 0 0],'linewidth',2)
-
-    % axis([-scale scale*11 -scale scale*11])
     xlabel('X')
     ylabel('Y')
     % plot(x,y) ;
@@ -114,7 +101,7 @@ if (i == h)
     hold off
 end
 
-%% Report
+%% Report Debug Mode
 if ((Gazebo_Sim == 1) && (Debug_Mode == 1))
     Debug_msg = 'Debug_Mode: ';
     Debug_msg = [Debug_msg, ' Heading = '];

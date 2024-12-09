@@ -1,4 +1,4 @@
-%% Init
+
 % FuzzySysInputs = [Preference_MF;Goal_Direction/360;dist2goal(X,X_g(:,Step_Counter))/2;Robot.Heading/180];
 FuzzySysInputs = [Preference_MF_near;Preference_MF;Goal_Direction/180;dist2goal(X,X_g(:,Step_Counter));Robot.Heading/180];
 
@@ -25,7 +25,7 @@ else
         Antcs(i) = Antc(FuzzySysInputs,MeanMat(:,i),VariMat(:,i),MF);
     end
     if (max(Antcs)<gamma && RulesNum < Max_Number_of_Rulls)
-        % disp(['*********** No Enough Covering: Add a New Rule, RulesNum = ', num2str(RulesNum) , ' ************'])
+        disp(['*********** No Enough Covering: Add a New Rule, RulesNum = ', num2str(RulesNum) , ' ************'])
         RulesNum = RulesNum+1;
         MeanMat(:,RulesNum) = FuzzySysInputs;
         VariMat(:,RulesNum) = ones(length(FuzzySysInputs),1)*Var0;
@@ -36,7 +36,7 @@ else
 end
 
 %% Eliminate do to age
-if (RulesNum > 1) && (EliminateDoToAge)
+if RulesNum > 1
     % check age Step_Counter
     % max_age = max(max_age,Step_Counter);
     Not_Fired_Rulls = (Antcs<min_gamma);
@@ -55,7 +55,7 @@ if (RulesNum > 1) && (EliminateDoToAge)
 end
 
 %% Eliminate do to similarity
-if (RulesNum > 2) && (EliminateDoToSimilarity)
+if RulesNum > 2
     i = 0;
     while i < RulesNum - 1
         i = i + 1;
@@ -66,7 +66,7 @@ if (RulesNum > 2) && (EliminateDoToSimilarity)
         end
         similarInputs = (norm_diff_input < min_similarity);
         if (sum(similarInputs) > 0)
-            % disp(['@@@@@@@@@@@@@@@@@@@@@@@ Eliminate Similar Rull, RulesNum = ', num2str(RulesNum) , ' ************'])
+            disp(['@@@@@@@@@@@@@@@@@@@@@@@ Eliminate Similar Rull, RulesNum = ', num2str(RulesNum) , ' ************'])
             unique_Inputs = ([ones(i,1);1 - similarInputs] == 1);
             RulesNum = RulesNum - sum(similarInputs);
             MeanMat = MeanMat(:,unique_Inputs);
@@ -76,14 +76,17 @@ if (RulesNum > 2) && (EliminateDoToSimilarity)
             age_of_Rulls = age_of_Rulls(unique_Inputs,:);
             Not_Fired_Rulls = Not_Fired_Rulls(unique_Inputs,:);
         end
+
     end
+
 end
 
 %% Eliminate do to High Cost
-if (Cost > max_aloable_cost) && (RulesNum > 10) && (EliminateDoyToHighCost)
+
+if (Cost > max_aloable_cost) && (RulesNum > 20)
     disp(['&&&&&&&&&&&&&&& Bad Rull, RulesNum = ', num2str(RulesNum) , ' ************'])
-    bad_Inputs = (Antcs > 0.7) == 0;
-    RulesNum = sum(bad_Inputs);
+    bad_Inputs = (Antcs > 0.8) == 0;
+    RulesNum = RulesNum - sum(bad_Inputs)-size(bad_Inputs,1);
     MeanMat = MeanMat(:,bad_Inputs);
     VariMat = VariMat(:,bad_Inputs);
     Antcs = Antcs(bad_Inputs,:);

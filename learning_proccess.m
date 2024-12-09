@@ -21,6 +21,8 @@ X_MFW.X_g_sim = X_g(:,Step_Counter:Step_Counter+Window_Size-1);
 
 [X_Sim, Cost] = simulate_MFW(X_MFW, env, fis, Window_Size);
 
+% Cost
+
 %% 
 
         

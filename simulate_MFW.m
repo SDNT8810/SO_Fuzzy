@@ -64,5 +64,5 @@ function [states, Cost] = simulate_MFW(X_MFW, env, fis, Window_Size)
     end
     states.X = reshape(NX,[size(X,1),Window_Size]);
     states.X_g_sim = reshape(X_g_sim,[size(X_g_sim,1),Window_Size]);
-    Cost = sum(J);
+    Cost = J * fis.lambda;
 end

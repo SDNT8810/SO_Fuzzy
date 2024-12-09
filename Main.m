@@ -1,17 +1,15 @@
-
 %% initializing
 clear; clf; clc; % close all;
 
 init_params
 tic
+Run_Timer = zeros(max_expected_size,1);
 
 %% live Loop
 while Step_Counter < max_expected_size-Window_Size
-
     Step_Counter = Step_Counter + 1;
     Run_Timer(Step_Counter) = toc;
     
-
     % Read simulation and environment parameters
     update_environment_parameters;
 
@@ -35,7 +33,6 @@ while Step_Counter < max_expected_size-Window_Size
         T_b = Run_Timer(Step_Counter);
         break ;
     end
-    % pause(.02)
 end
 
 %% Publish stop velocity commands
