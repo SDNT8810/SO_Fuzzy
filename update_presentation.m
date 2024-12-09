@@ -51,10 +51,14 @@ i = max(floor(h/skipframe_MF)*skipframe_MF,1);
 if (i == h)
     figure(1)
     subplot(2,3,6); 
-    % th = 1:360; 
-    % DD = zeros(1,360); DD(round(Fuzzy_Local_Direction_ref)+1) = 1; 
+    th = 1:360; 
+    DD = zeros(1,360); 
+    DD(round(Fuzzy_Local_Direction_ref+180)+1) = 1; 
     polarplot([Preference_MF; Preference_MF(1)]); 
-    % hold on; polarplot(th',DD'); hold off;
+    hold on; 
+    polarplot(th,DD); 
+    polarplot([Preference_MF_near; Preference_MF_near(1)]); 
+    hold off;
 end
 
 %% Map

@@ -1,6 +1,7 @@
 %% Init
 % FuzzySysInputs = [Preference_MF;Goal_Direction/360;dist2goal(X,X_g(:,Step_Counter))/2;Robot.Heading/180];
-FuzzySysInputs = [Preference_MF_near;Preference_MF;Goal_Direction/180;dist2goal(X,X_g(:,Step_Counter));Robot.Heading/180];
+% FuzzySysInputs = [Preference_MF;Preference_MF_near;Goal_Direction/180;dist2goal(X,X_g(:,Step_Counter));Robot.Heading/180];
+FuzzySysInputs = [Preference_MF;Preference_MF_near;Goal_Direction/180;dist2goal(X,X_g(:,Step_Counter));Robot.Heading/180];
 
 [~, argmaxang] = max(Preference_MF);
 saturated_MF_Lidar_Angle = (MF_Lidar_Angle + (360*(MF_Lidar_Angle<-180)) + (-360*(MF_Lidar_Angle>180)));
@@ -66,7 +67,7 @@ if (RulesNum > 2) && (EliminateDoToSimilarity)
         end
         similarInputs = (norm_diff_input < min_similarity);
         if (sum(similarInputs) > 0)
-            % disp(['@@@@@@@@@@@@@@@@@@@@@@@ Eliminate Similar Rull, RulesNum = ', num2str(RulesNum) , ' ************'])
+            disp(['@@@@@@@@@@@@@@@@@@@@@@@ Eliminate Similar Rull, RulesNum = ', num2str(RulesNum) , ' ************'])
             unique_Inputs = ([ones(i,1);1 - similarInputs] == 1);
             RulesNum = RulesNum - sum(similarInputs);
             MeanMat = MeanMat(:,unique_Inputs);

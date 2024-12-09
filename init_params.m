@@ -9,7 +9,7 @@ EliminateDoToSimilarity = true;
 T_s = 0.05;                               % Time step
 T_f = 100;                                % Final Time
 T_b = 0;                                  % Break Time
-Window_Size = 30;
+Window_Size = 5;
 Step_Counter = 0;
 max_expected_size = round(T_f / T_s);
 Run_Timer = zeros(max_expected_size,1);   % Time vector
@@ -29,7 +29,7 @@ X0 = [x_0, x_dot_0, y_0, y_dot_0, theta_0, theta_dot_0]';
 
 %% Init State Recorder Matrixes
 X = X0 + zeros(length(X0), max_expected_size);
-X_g = [3.1;2.6;0] + zeros(3, max_expected_size);
+X_g = [2.6;2.6;0] + zeros(3, max_expected_size);
 Xd0 = [X_g(1), x_dot_0, X_g(2), y_dot_0, X_g(3), theta_dot_0]';
 Xd = Xd0 + zeros(length(X0), max_expected_size);
 Dist2Goal = dist2goal([X(1,1), X(3,1)],X_g) + zeros(1, max_expected_size);
@@ -39,7 +39,7 @@ Goal_Vector_sim = zeros(2, Window_Size);
 
 %% Robot Parameters
 Lidar_Range = 1.;
-Lidar_Range_near = 0.3;
+Lidar_Range_near = 0.5;
 m = 2;
 Robot.m = m;
 Robot.Lidar_Range = Lidar_Range;
@@ -54,15 +54,13 @@ Robot_Sim.Xd_sim = Xd_sim;
 
 %% Fuzzy Network Parameters
 Number_of_Rulls = 0;
-Max_Number_of_Rulls = 150;
-Number_of_Inputs = 6;    % ........
-Number_of_Outputs = 2;    
+Max_Number_of_Rulls = 70;
 FN_Phi = zeros(Number_of_Rulls,1);
 bell_size = 70;
 bell_coff = 3;
 sample = Robot.X;
 
-Dist_MF_L2F = 5;
+Dist_MF_L2F = 20;
 MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
 
 Num_MF_L2F = 360/Dist_MF_L2F;
@@ -75,22 +73,22 @@ MF_Lidar = @(Points360) Lidar2Fuzzy(Points360, Lidar_Augmented, Membership_Lidar
 
 MeanMat = [];
 VariMat = [];
-Var0 = 1.;
+Var0 = 0.8;
 W = [];
 RulesNum = 0;
 MF = @(X,M,S) gaussmf(X,[S, M]);
 ElavFuz = @(W,Antcs) 180 * (W'*Antcs)/abs(sum(Antcs));
 
 temp_w = 0;
-gamma = 0.7;
+gamma = 0.65;
 min_gamma = 0.4;
 max_age = 250;
-min_similarity = 1.8;
+min_similarity = 1;
 Cost = 0;
 max_aloable_cost = 200;
 
-gamma_0 = 0.9;
 lambda = zeros(Window_Size,1);
+gamma_0 = 0.9;
 for i = 1 : Window_Size
     lambda(i,1) = gamma_0 ^ i;
 end
