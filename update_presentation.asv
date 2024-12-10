@@ -5,10 +5,7 @@ x(i) = m2p * (X(1,i));
 y(i) = m2p * (X(3,i));  
 theta(i) = -X(5,i)*pi/180 ;  
 
-skipframe_MF = 5;
-skipframe_Lidar = 5;
-skipframe_Debug = 10;
-skipframe_map = 10;
+
 
 map_x_max = max([x,m2p * X_g(1,1)]);
 map_x_min = min([x,-2 * m2p]);
@@ -18,6 +15,7 @@ map_margin = 1.2 * m2p;
 map_axix = map_margin*[map_x_min map_x_max map_y_min map_y_max];
 
 %% Lidar
+skipframe_Lidar = 5;
 i = max(floor(h/skipframe_Lidar)*skipframe_Lidar,1);
 if (i == h)
     figure(1)
@@ -39,8 +37,20 @@ if (i == h)
     % hold off;
 end
 
+%% path
+% skipframe_Lidar = 1;
+% i = max(floor(h/skipframe_Lidar)*skipframe_Lidar,1);
+% if (i == h)
+%     figure(1)
+%     subplot(2,3,3)
+%     plot(x,y,'LineWidth',1.2,'Color','b')
+%     hold on
+%     plot(X_g(1,1),X_g(2,1),'Marker','o','Color','r','LineWidth',2)
+%     plot(X(1,1),X(3,1),'Marker','o','Color','g','LineWidth',2)
+% 
+% end
+
 %% Preference_MF
-i = max(floor(h/skipframe_MF)*skipframe_MF,1);
 if (i == h)
     figure(1)
     subplot(2,3,6); 
@@ -58,6 +68,7 @@ if (i == h)
 end
 
 %% Map
+skipframe_map = 4;
 i = max(floor(h/skipframe_map)*skipframe_map,1);
 % c_near = Lidar_Range_near*m2p;
 
@@ -100,8 +111,7 @@ if (i == h) && (i > 1)
 end
 
 %% Report Debug Mode
-i = max(floor(h/skipframe_Debug)*skipframe_Debug,1);
-if ((Gazebo_Sim == 1) && (Debug_Mode == 1) && (i == h))
+if ((Gazebo_Sim == 1) && (Debug_Mode == 1))
     Debug_msg = 'Debug_Mode: ';
     Debug_msg = [Debug_msg, ' Heading = '];
     Debug_msg = [Debug_msg, num2str(Robot.Heading)];

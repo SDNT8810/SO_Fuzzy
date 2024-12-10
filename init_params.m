@@ -9,7 +9,7 @@ EliminateDoToSimilarity = true;
 T_s = 0.05;                               % Time step
 T_f = 100;                                % Final Time
 T_b = 0;                                  % Break Time
-Window_Size = 5;
+Window_Size = 10;
 Step_Counter = 0;
 max_expected_size = round(T_f / T_s);
 Run_Timer = zeros(max_expected_size,1);   % Time vector
@@ -38,8 +38,8 @@ Goal_Vector = zeros(2, max_expected_size);
 Goal_Vector_sim = zeros(2, Window_Size);
 
 %% Robot Parameters
-Lidar_Range = 1.;
-Lidar_Range_near = 0.5;
+Lidar_Range = 1;
+% Lidar_Range_near = 0.5;
 m = 2;
 Robot.m = m;
 Robot.Lidar_Range = Lidar_Range;
@@ -51,6 +51,12 @@ Robot.Heading = theta_0;
 Robot_Sim = Robot;
 Robot_Sim.Window_Size = Window_Size;
 Robot_Sim.Xd_sim = Xd_sim;
+
+%% Presentation Parameters
+m2p = 79;
+b = 3 ;
+c = Lidar_Range*m2p;
+
 
 %% Fuzzy Network Parameters
 Number_of_Rulls = 0;
@@ -111,7 +117,7 @@ else
     map = transpose(map);
     s = size(map);
     map_local = map;
-    m2p = round(s(1)/4);    
+    
     rl = floor(Lidar_Range * m2p);
     % map_frame = ones(2*l + s);
     % map_frame(l+1:l+s(1),l+1:l+s(2)) = map;
@@ -119,6 +125,7 @@ else
     hold on;
     plot(m2p * X(1,1), m2p * X(3,1), 'sg', 'MarkerFaceColor', 'g'); % Green marker for start
     plot(m2p * X_g(1,1), m2p * X_g(2,1), 'sr', 'MarkerFaceColor', 'r'); % Red marker for goal
+    lidar_circle = plot(c*sin(t)+(X(1,1)),c*cos(t)+X(3,1),':b','linewidth',0.8);
 
 end
 

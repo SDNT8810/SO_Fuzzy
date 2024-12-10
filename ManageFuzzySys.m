@@ -1,14 +1,14 @@
 %% Init
 % FuzzySysInputs = [Preference_MF;Goal_Direction/360;dist2goal(X,X_g(:,Step_Counter))/2;Robot.Heading/180];
 % FuzzySysInputs = [Preference_MF;Preference_MF_near;Goal_Direction/180;dist2goal(X,X_g(:,Step_Counter));Robot.Heading/180];
-FuzzySysInputs = [Preference_MF;Preference_MF_near;Goal_Direction/180;dist2goal(X,X_g(:,Step_Counter));Robot.Heading/180];
+FuzzySysInputs = [Preference_MF;Goal_Direction/180;dist2goal(X,X_g(:,Step_Counter));Robot.Heading/180];
 
 [~, argmaxang] = max(Preference_MF);
 saturated_MF_Lidar_Angle = (MF_Lidar_Angle + (360*(MF_Lidar_Angle<-180)) + (-360*(MF_Lidar_Angle>180)));
 
 refang =  SaturatedPHI2Goal(argmaxang) + saturated_MF_Lidar_Angle(argmaxang);% +rand*360;
 refang = refang / 180;
-V = (2*V + 0.3 * (1-MF_Lid_near(argmaxang)))/3;
+V = (2*V + 0.3 * (1-MF_Lid(argmaxang)))/3;
 % refang = MF_Lidar_Angle'*Preference_MF / sum(Preference_MF);
 
 %% add New Rull
