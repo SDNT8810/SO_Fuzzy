@@ -8,8 +8,7 @@ Action.Fuzzy_Local_Direction_ref = Fuzzy_Local_Direction_ref;
 
 % States
 State.FuzzySysInputs = FuzzySysInputs;
-State.Points360 = Points360;
-State.X = X(:,Step_Counter);
+State.dX = X([1,3],Step_Counter);
 State.X_g = X_g(:,Step_Counter);
 % Params.map_local = map_local;
 
