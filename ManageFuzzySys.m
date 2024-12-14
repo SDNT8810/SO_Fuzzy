@@ -93,20 +93,18 @@ if (Cost > max_aloable_cost) && (RulesNum > 10) && (EliminateDoyToHighCost)
     Not_Fired_Rulls = Not_Fired_Rulls(bad_Inputs,:);
 end
 
-
-
-% disp(['RulesNum : ',num2str(RulesNum)])
+%% Evaluation
+% saturation
 W = (W + (2*(W<-1)) + (-2*(W>1)));
 
 
-if sum(Antcs) == 0
-    Fuzzy_Local_Direction_ref = 0;
+
+if rand < Params.epsilon
+    Fuzzy_Local_Direction_ref = 360 * (rand-0.5);
 else
-    Fuzzy_Local_Direction_ref = ElavFuz(W,Antcs);
+    if sum(Antcs) == 0
+        Fuzzy_Local_Direction_ref = 0;
+    else
+        Fuzzy_Local_Direction_ref = ElavFuz(W,Antcs);
+    end
 end
-
-% Fuzzy_Local_Direction_ref = ((W'*Antcs)/sum(Antcs) + 2*Goal_Direction)/3;
-% Fuzzy_Local_Direction_ref = Goal_Direction;
-% disp(['Fuzzy_Local_Direction_ref = ', num2str(Fuzzy_Local_Direction_ref)])
-
-

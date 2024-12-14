@@ -19,10 +19,14 @@ function [states, Cost] = simulate_MFW(State, Action, Params)
         for i = 1:RulesNum
             Antcs(i,1) = Antc(FuzzySysInputs,Action.M(:,i),Action.V(:,i),Params.MF);
         end
-        if sum(Antcs) == 0
-            Fuzzy_Local_Direction_ref = 0;
+        if rand < Params.epsilon
+            Fuzzy_Local_Direction_ref = 360 * (rand-0.5);
         else
-            Fuzzy_Local_Direction_ref = Params.ElavFuz(W,Antcs);
+            if sum(Antcs) == 0
+                Fuzzy_Local_Direction_ref = 0;
+            else
+                Fuzzy_Local_Direction_ref = Params.ElavFuz(W,Antcs);
+            end
         end
         Vel = sqrt(X(2)^2 + X(4)^2);
         NX(2,N) = Vel * cosd(X(5));

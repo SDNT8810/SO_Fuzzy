@@ -1,7 +1,7 @@
-function [State_Prim, Action_Prim] = simulate_OSA(State, Action, Params)
+function [State_Prim, Action_Prim, r] = simulate_OSA(State, Action, Params)
     % Parameters
     FuzzySysInputs = State.FuzzySysInputs;
-    Points360 = State.Points360;
+    % Points360 = State.Points360;
     X = State.X;
     X_g = State.X_g;
     W = Action.W;
@@ -36,26 +36,51 @@ function [State_Prim, Action_Prim] = simulate_OSA(State, Action, Params)
     for i = 1:RulesNum
         Antcs(i,1) = Antc(FuzzySysInputs,Action.M(:,i),Action.V(:,i),Params.MF);
     end
-    if sum(Antcs) == 0
-        Fuzzy_Local_Direction_ref = 0;
+    if rand < Params.epsilon
+        Fuzzy_Local_Direction_ref = 360 * (rand-0.5);
     else
-        Fuzzy_Local_Direction_ref = Params.ElavFuz(W,Antcs);
+        if sum(Antcs) == 0
+            Fuzzy_Local_Direction_ref = 0;
+        else
+            Fuzzy_Local_Direction_ref = Params.ElavFuz(W,Antcs);
+        end
     end
+    Points360 = Read_Lidar(X, Params.m2p, Params.Lidar_Range, Params.map_local);
+    Points360 = Params.Lidar_Range - Points360;
 
+    Goal_Vector(:,1) = [X_g(1,1) - X(1);X_g(2,1) - X(3)];
+    Goal_angle = atan2d(Goal_Vector(2,1),Goal_Vector(1,1));
+    Goal_Direction = Goal_angle - X(5);
+    Goal_Direction = (Goal_Direction + (360*(Goal_Direction<-180)) + (-360*(Goal_Direction>180)));
+
+    MF_Lid = Params.MF_Lidar(Points360);
+
+    Phi2Goal = Params.MF_Lidar_Angle - Goal_Direction;
+    SaturatedPHI2Goal = (Phi2Goal + (360*(Phi2Goal<-180)) + (-360*(Phi2Goal>180)));
+    weight_MF = gbellmf(SaturatedPHI2Goal,[70, 3, 0]);
+    
+    Preference_MF = (weight_MF*0.7+0.3).*(1-MF_Lid);
+    Preference_MF = Preference_MF / max(Preference_MF);
+
+    % FuzzySysInputs = [Preference_MF;Goal_Direction/180;dist2goal(X,X_g(:,Step_Counter));X(5)/180];
+    FuzzySysInputs = [Preference_MF;Goal_Direction/180;X(5)/180];
+    
     r(1,1) = norm(Goal_Vector(:,1)) + ...
-                        abs(Goal_Direction)/180 + ...
-                        (Fuzzy_Local_Direction_ref^2)/180 + ...
-                        (0.01/max(min(Params.Lidar_Range - Points360),0.01)^2);
+             abs(Goal_Direction)/180 + ...
+             (Fuzzy_Local_Direction_ref^2)/180 + ...
+             (0.01/max(min(Params.Lidar_Range - Points360),0.01)^2);
 
     State_Prim.FuzzySysInputs = FuzzySysInputs;
-    State.Points360 = Points360;
+    State_Prim.Points360 = Points360;
     State_Prim.X = NX;
     State_Prim.X_g = X_g;
+    State_Prim.Phi_a = Params.Phi_a(Antcs);
 
-    Action.W = W;
-    Action.M = MeanMat;
-    Action.V = VariMat;
+    Action_Prim.W = W;
+    Action_Prim.M = Action.M;
+    Action_Prim.V = Action.V;
     Action_Prim.Fuzzy_Local_Direction_ref = Fuzzy_Local_Direction_ref;
+
 end
 
 

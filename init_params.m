@@ -6,7 +6,7 @@ EliminateDoToAge        = true;
 EliminateDoToSimilarity = true;
 
 %% Time and Counter Parameters
-T_s = 0.05;                               % Time step
+T_s = 0.02;                               % Time step
 T_f = 100;                                % Final Time
 T_b = 0;                                  % Break Time
 Window_Size = 10;
@@ -15,9 +15,10 @@ max_expected_size = round(T_f / T_s);
 Run_Timer = zeros(max_expected_size,1);   % Time vector
 T_k = Window_Size * T_s;                  % Window Time
 t = linspace(0,2*pi,50);
+Delta_t = 1;
 
 %% Initial State
-V = 0.3;
+V = 0.2;
 Omega = 4 * pi;
 x_0 = .1;
 x_dot_0 = V;
@@ -29,7 +30,7 @@ X0 = [x_0, x_dot_0, y_0, y_dot_0, theta_0, theta_dot_0]';
 
 %% Init State Recorder Matrixes
 X = X0 + zeros(length(X0), max_expected_size);
-X_g = [2.1;1.9;0] + zeros(3, max_expected_size);
+X_g = [3.2;2.;0] + zeros(3, max_expected_size);
 Xd0 = [X_g(1), x_dot_0, X_g(2), y_dot_0, X_g(3), theta_dot_0]';
 Xd = Xd0 + zeros(length(X0), max_expected_size);
 Dist2Goal = dist2goal([X(1,1), X(3,1)],X_g) + zeros(1, max_expected_size);
@@ -60,13 +61,12 @@ c = Lidar_Range*m2p;
 
 %% Fuzzy Network Parameters
 Number_of_Rulls = 0;
-Max_Number_of_Rulls = 30;
-FN_Phi = zeros(Number_of_Rulls,1);
+Max_Number_of_Rulls = 70;
 bell_size = 70;
 bell_coff = 3;
 sample = Robot.X;
 
-Dist_MF_L2F = 20;
+Dist_MF_L2F = 10;
 MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
 
 Num_MF_L2F = 360/Dist_MF_L2F;
@@ -83,20 +83,25 @@ Var0 = 1.2;
 W = [];
 RulesNum = 0;
 MF = @(X,M,S) gaussmf(X,[S, M]);
-ElavFuz = @(W,Antcs) 180 * (W'*Antcs)/abs(sum(Antcs));
+Phi_a = @(Antcs) Antcs/abs(sum(Antcs));
+ElavFuz = @(W,Antcs) 180 * W' * Phi_a(Antcs);
+
 
 temp_w = 0;
 gamma = 0.65;
-min_gamma = 0.4;
-max_age = 250;
+min_gamma = 0.2;
+max_age = 350;
 min_similarity = 0.6;
 Cost = 0;
 max_aloable_cost = 200;
 
-lambda = zeros(Window_Size,1);
 gamma_0 = 0.9;
 lambda = gamma_0 .^ (1:Window_Size)';
 fis.lambda = lambda;
+epsilon = 0.01;
+gamma_RL = 0.9;
+Gamma_RL = diag(gamma_RL.^(1:Window_Size));
+alpha = 0.01;
 
 %% Environmental Parameters
 if (Gazebo_Sim == 1)
@@ -133,6 +138,8 @@ y = zeros(1,max_expected_size);
 theta = zeros(1,max_expected_size);
 
 %% RL Parameters
+Long_Memory_Experience.Window_Size = Window_Size;
+load FuzzySystemLongMemory
 Params.Window_Size = Window_Size;
 Params.T_s = T_s;
 Params.Omega = Omega;
@@ -144,4 +151,12 @@ Params.map_local = map_local;
 Params.MF_Lidar = MF_Lidar;
 Params.MF = MF;
 Params.ElavFuz = ElavFuz;
+Params.Phi_a = Phi_a;
+Params.epsilon = epsilon;
+Params.Delta_t = Delta_t;
+Params.gamma_RL = gamma_RL;
+Params.Gamma_RL = Gamma_RL;
+Params.alpha = alpha;
+
+
 
