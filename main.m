@@ -31,7 +31,11 @@ while Step_Counter < max_expected_size-Window_Size
     end
     if  ( Dist2Goal(Step_Counter) < 5/m2p )
         T_b = Run_Timer(Step_Counter);
+        disp('(REAL World:) Goal !!!')
         break ;
+    end
+    if ((1) && (min(Params.Lidar_Range - Points360) < Robot.R))
+        disp('(REAL World:) hit the wall !!!');
     end
 end
 

@@ -48,11 +48,6 @@ function [State_Prim, Action_Prim, r] = simulate_OSA(State, Action, Params)
     Points360 = Read_Lidar(X, Params.m2p, Params.Lidar_Range, Params.map_local);
     Points360 = Params.Lidar_Range - Points360;
 
-    Goal_Vector(:,1) = [X_g(1,1) - X(1);X_g(2,1) - X(3)];
-    Goal_angle = atan2d(Goal_Vector(2,1),Goal_Vector(1,1));
-    Goal_Direction = Goal_angle - X(5);
-    Goal_Direction = (Goal_Direction + (360*(Goal_Direction<-180)) + (-360*(Goal_Direction>180)));
-
     MF_Lid = Params.MF_Lidar(Points360);
 
     Phi2Goal = Params.MF_Lidar_Angle - Goal_Direction;
@@ -68,13 +63,14 @@ function [State_Prim, Action_Prim, r] = simulate_OSA(State, Action, Params)
     r(1,1) = norm(Goal_Vector(:,1)) + ...
              abs(Goal_Direction)/180 + ...
              (Fuzzy_Local_Direction_ref^2)/180 + ...
-             (0.01/max(min(Params.Lidar_Range - Points360),0.01)^2);
+             (1/max(min(Params.Lidar_Range - Points360),Params.R)^2);
 
     State_Prim.FuzzySysInputs = FuzzySysInputs;
     State_Prim.Points360 = Points360;
     State_Prim.X = NX;
     State_Prim.X_g = X_g;
     State_Prim.Phi_a = Params.Phi_a(Antcs);
+    State_Prim.Goal_Direction = Goal_Direction;
 
     Action_Prim.W = W;
     Action_Prim.M = Action.M;
