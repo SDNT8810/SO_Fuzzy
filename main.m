@@ -29,7 +29,7 @@ while Step_Counter < max_expected_size-Window_Size
     if ( Run_Timer(Step_Counter) > T_f )
         break ;
     end
-    if  ( Dist2Goal(Step_Counter) < 5/m2p )
+    if  ( Dist2Goal(Step_Counter) < Params.R )
         T_b = Run_Timer(Step_Counter);
         disp('(REAL World:) Goal !!!')
         break ;

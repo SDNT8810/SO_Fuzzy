@@ -3,7 +3,7 @@
 FuzzySysInputs = [Preference_MF;Goal_Direction/180;Robot.Heading/180];
 
 [~, argmaxang] = max(Preference_MF);
-% saturated_MF_Lidar_Angle = (MF_Lidar_Angle + (360*(MF_Lidar_Angle<-180)) + (-360*(MF_Lidar_Angle>180)));
+saturated_MF_Lidar_Angle = (MF_Lidar_Angle + (360*(MF_Lidar_Angle<-180)) + (-360*(MF_Lidar_Angle>180)));
 
 % refang =  SaturatedPHI2Goal(argmaxang) + saturated_MF_Lidar_Angle(argmaxang);
 % refang = refang / 180;

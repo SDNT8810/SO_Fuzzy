@@ -1,5 +1,5 @@
 %% General Params
-Debug_Mode = 0;
+Debug_Mode = 1;
 Gazebo_Sim = 0;
 EliminateDoyToHighCost  = false;
 EliminateDoToAge        = true;
@@ -15,7 +15,7 @@ max_expected_size = round(T_f / T_s);
 Run_Timer = zeros(max_expected_size,1);   % Time vector
 T_k = Window_Size * T_s;                  % Window Time
 t = linspace(0,2*pi,50);
-Delta_t = .1;
+Delta_t = 1;
 
 %% Initial State
 V = 0.3;
@@ -30,7 +30,7 @@ X0 = [x_0, x_dot_0, y_0, y_dot_0, theta_0, theta_dot_0]';
 
 %% Init State Recorder Matrixes
 X = X0 + zeros(length(X0), max_expected_size);
-X_g = [1.7;1.6;0] + zeros(3, max_expected_size);
+X_g = [1.5;1.5;0] + zeros(3, max_expected_size);
 Xd0 = [X_g(1), x_dot_0, X_g(2), y_dot_0, X_g(3), theta_dot_0]';
 Xd = Xd0 + zeros(length(X0), max_expected_size);
 Dist2Goal = dist2goal([X(1,1), X(3,1)],X_g) + zeros(1, max_expected_size);
@@ -56,12 +56,12 @@ Robot_Sim.Xd_sim = Xd_sim;
 
 %% Fuzzy Network Parameters
 Number_of_Rulls = 0;
-Max_Number_of_Rulls = 100;
+Max_Number_of_Rulls = 70;
 bell_size = 70;
 bell_coff = 3;
 sample = Robot.X;
 
-Dist_MF_L2F = 30;
+Dist_MF_L2F = 10;
 MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
 
 Num_MF_L2F = 360/Dist_MF_L2F;
@@ -87,7 +87,7 @@ min_gamma = 0.2;
 max_age = 250;
 min_similarity = 0.6;
 Cost = 0;
-max_aloable_cost = 200;
+max_aloable_cost = 250;
 
 gamma_0 = 0.9;
 lambda = gamma_0 .^ (1:Window_Size)';
@@ -158,7 +158,7 @@ theta = zeros(1,max_expected_size);
 
 %% RL Parameters
 Long_Memory_Experience.Window_Size = Window_Size;
-% load FuzzySystemLongMemory
+load FuzzySystemLongMemory
 Params.Window_Size = Window_Size;
 Params.T_s = T_s;
 Params.Omega = Omega;

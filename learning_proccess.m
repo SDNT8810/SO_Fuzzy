@@ -27,24 +27,23 @@ r = zeros(1,Window_Size);
 TD = zeros(1,Window_Size);
 DT_DW = zeros(Window_Size,length(W));
 done = true;
-while ((N < Window_Size) && (true))
+while ((N < Window_Size) && (done))
     N = N + 1;
     [State_Prim, Action_Prim, r(N)] = simulate_OSA(State, Action, Params);
     Experience{N} = {State, Action, r(N), State_Prim, Action_Prim, TD(N), W};
     DT_DW(N,:) = State_Prim.Phi_a';
-    % End Conditions
+    % % End Conditions
     % if (dist2goal([State_Prim.X(1), State_Prim.X(3)], State_Prim.X_g) < 5/Params.m2p)
     %     if (Debug_Mode), disp('(SIMULATION:) Goal !!!'); end
     %     % break
     % end
     if (min(Params.Lidar_Range - State_Prim.Points360) < Robot.R) 
-        % TD(N) = -50;
         if (Debug_Mode), disp('(SIMULATION:) hit the wall !!!'); end
         % break
     end
     [QSA,~] = Q(State, Action, Params);
     [QSA_Prime,done] = Q(State, Action, Params);
-    TD(N) = -QSA - Params.Delta_t*r(N) + Params.gamma_RL * QSA_Prime;
+    TD(N) = -QSA + Params.Delta_t*(r*Params.lambda) + Params.gamma_RL * QSA_Prime;
     State = State_Prim;
     Action = Action_Prim;
 end
@@ -52,13 +51,13 @@ end
 %% Train Actor
 % T = Choose_Experience(TD,Long_Memory_Experience);
 T = TD;
+T(end) = T(end-1);
 W_new = W - Params.alpha * (T * Params.Gamma_RL * DT_DW)';
 
-% disp(['T: ' num2str(T)])
-% disp(['r: ' num2str(r)])
-% disp(['dW: ' num2str(max(abs(W_new-W)))])
-% disp(['q: ' num2str(QSA)])
-
+disp(['T: ' num2str(T)])
+disp(['r: ' num2str(r)])
+disp(['dW: ' num2str(max(abs(W_new-W)))])
+disp(['q: ' num2str(QSA)])
 
 %% Evaluate Training
 [State_Prim, Action_Prim, r(N)] = simulate_OSA(State, Action, Params);
