@@ -42,7 +42,7 @@ while ((N < Window_Size) && (done))
         % break
     end
     [QSA,~] = Q(State, Action, Params);
-    [QSA_Prime,done] = Q(State, Action, Params);
+    [QSA_Prime,done] = Q(State_Prim, Action_Prim, Params);
     TD(N) = -QSA + Params.Delta_t*(r*Params.lambda) + Params.gamma_RL * QSA_Prime;
     State = State_Prim;
     Action = Action_Prim;
