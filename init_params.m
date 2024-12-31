@@ -1,5 +1,5 @@
 %% General Params
-Debug_Mode = 1;
+Debug_Mode = 0;
 Gazebo_Sim = 0;
 EliminateDoyToHighCost  = false;
 EliminateDoToAge        = true;
@@ -18,11 +18,11 @@ t = linspace(0,2*pi,50);
 Delta_t = 1;
 
 %% Initial State
-V = 0.3;
+V = 0.25;
 Omega = 4 * pi;
 x_0 = .1;
 x_dot_0 = V;
-y_0 = .3;
+y_0 = .1;
 y_dot_0 = V;
 theta_0 = 0;
 theta_dot_0 = Omega;
@@ -39,8 +39,7 @@ Goal_Vector = zeros(2, max_expected_size);
 Goal_Vector_sim = zeros(2, Window_Size);
 
 %% Robot Parameters
-Lidar_Range = 1.5;
-% Lidar_Range_near = 0.5;
+Lidar_Range = 1.1;
 m = 2;
 Robot.m = m;
 Robot.Lidar_Range = Lidar_Range;
@@ -61,7 +60,7 @@ bell_size = 70;
 bell_coff = 3;
 sample = Robot.X;
 
-Dist_MF_L2F = 10;
+Dist_MF_L2F = 30;
 MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
 
 Num_MF_L2F = 360/Dist_MF_L2F;
@@ -138,23 +137,63 @@ else
     map_local = map;
     map_wide = 3;    
     m2p = round(s(1)/map_wide);
-    b = m2p * Robot.R;
+    b = m2p * Robot.R * 0.9;
+    bb = b * Lidar_Range;
     c = Lidar_Range*m2p;
     rl = floor(Lidar_Range * m2p);
     % map_frame = ones(2*l + s);
     % map_frame(l+1:l+s(1),l+1:l+s(2)) = map;
-    imshow(map');
-    hold on;
-    plot(m2p * X(1,1), m2p * X(3,1), 'sg', 'MarkerFaceColor', 'g'); % Green marker for start
-    plot(m2p * X_g(1,1), m2p * X_g(2,1), 'sr', 'MarkerFaceColor', 'r'); % Red marker for goal
-    lidar_circle = plot(c*sin(t)+(X(1,1)),c*cos(t)+X(3,1),':b','linewidth',0.8);
 
+    hImage = imshow(map', 'InitialMagnification', 'fit');
+    
+    % Adjust transparency using 'AlphaData'
+    alphaValue = 0.3; % Set transparency level (0 = fully transparent, 1 = fully opaque)
+    set(hImage, 'AlphaData', alphaValue);
+
+    hold on;
+    startPoint = plot(m2p * X(1,1), m2p * X(3,1), 's', 'MarkerFaceColor', 'g', 'MarkerEdgeColor', 'g', 'MarkerSize', 20); % Green marker for start
+    targetPoint = plot(m2p * X_g(1,1), m2p * X_g(2,1), 'p', 'MarkerFaceColor', 'r', 'MarkerSize', 40); % Red marker for goal
+    lidar_circle = plot(c*sin(t)+(X(1,1)),c*cos(t)+X(3,1),':b','linewidth',0.8);
+    delete(lidar_circle);
 end
 
 Points360 = zeros(360,1);
 x = zeros(1,max_expected_size);
 y = zeros(1,max_expected_size);
 theta = zeros(1,max_expected_size);
+
+lidar_index = 360;
+lidar_line(lidar_index) = line([0; 0.1], [0.1; 0.1], 'color', 'blue');
+delete(lidar_line);
+lw = 5;
+
+% Get the size of the map
+[rows, cols] = size(map);
+
+% Define the rectangle around the map
+rectangle('Position', [0.5, 0.5, rows, cols], 'EdgeColor', 'black', 'LineWidth', 5);
+
+% Add title and axis labels
+title(['Time: ', num2str(T_s * Step_Counter)], 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+xlabel('X-axis (cm)', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+ylabel('Y-axis (cm)', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+
+% Adjust the axes to ensure ruler-like appearance
+ax = gca; % Get current axes
+ax.XGrid = 'on';
+ax.YGrid = 'on';
+ax.GridColor = 'black'; % Grid color
+ax.GridAlpha = 1.0; % Grid transparency
+ax.LineWidth = 1.5; % Grid line thickness
+ax.GridLineStyle = '-'; % Dashed grid lines
+ax.GridAlpha = 0.05; % Transparency of grid lines
+
+% Enable axis ticks and labels
+axis on;
+set(ax, 'TickDir', 'out', 'FontSize', 24, 'FontWeight', 'bold'); % Customize tick appearance
+
+% Add legend
+legend([startPoint, targetPoint], {'Start Point', 'Target'}, 'FontSize', 24, 'Location', 'best');
 
 %% RL Parameters
 Long_Memory_Experience.Window_Size = Window_Size;

@@ -54,10 +54,10 @@ T = TD;
 T(end) = T(end-1);
 W_new = W - Params.alpha * (T * Params.Gamma_RL * DT_DW)';
 
-disp(['T: ' num2str(T)])
-disp(['r: ' num2str(r)])
-disp(['dW: ' num2str(max(abs(W_new-W)))])
-disp(['q: ' num2str(QSA)])
+% disp(['T: ' num2str(T)])
+% disp(['r: ' num2str(r)])
+% disp(['dW: ' num2str(max(abs(W_new-W)))])
+% disp(['q: ' num2str(QSA)])
 
 %% Evaluate Training
 [State_Prim, Action_Prim, r(N)] = simulate_OSA(State, Action, Params);

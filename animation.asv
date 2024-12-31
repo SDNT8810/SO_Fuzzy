@@ -1,3 +1,62 @@
+%% initializing
+% clear; clf; clc; % close all;
+clc
+%% Environmental Parameters
+
+subplot(2,3,[1,2,4,5])
+hImage = imshow(map', 'InitialMagnification', 'fit');
+
+% Adjust transparency using 'AlphaData'
+alphaValue = 0.3; % Set transparency level (0 = fully transparent, 1 = fully opaque)
+set(hImage, 'AlphaData', alphaValue);
+
+hold on;
+startPoint = plot(m2p * X(1,1), m2p * X(3,1), 's', 'MarkerFaceColor', 'g', 'MarkerEdgeColor', 'g', 'MarkerSize', 20); % Green marker for start
+targetPoint = plot(m2p * X_g(1,1), m2p * X_g(2,1), 'p', 'MarkerFaceColor', 'r', 'MarkerSize', 40); % Red marker for goal
+lidar_circle = plot(c*sin(t)+(X(1,1)),c*cos(t)+X(3,1),':b','linewidth',0.8);
+delete(lidar_circle);
+
+lidar_index = 360;
+lidar_line(lidar_index) = line([0; 0.1], [0.1; 0.1], 'color', 'blue');
+delete(lidar_line);
+lw = 5;
+
+% Get the size of the map
+[rows, cols] = size(map);
+
+% Define the rectangle around the map
+rectangle('Position', [0.5, 0.5, rows, cols], 'EdgeColor', 'black', 'LineWidth', 5);
+
+% Add title and axis labels
+title(['Time: ', num2str(T_s * Step_Counter)], 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+xlabel('X-axis (cm)', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+ylabel('Y-axis (cm)', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+
+% Adjust the axes to ensure ruler-like appearance
+ax = gca; % Get current axes
+ax.XGrid = 'on';
+ax.YGrid = 'on';
+ax.GridColor = 'black'; % Grid color
+ax.GridAlpha = 1.0; % Grid transparency
+ax.LineWidth = 1.5; % Grid line thickness
+ax.GridLineStyle = '-'; % Dashed grid lines
+ax.GridAlpha = 0.05; % Transparency of grid lines
+
+% Enable axis ticks and labels
+axis on;
+set(ax, 'TickDir', 'out', 'FontSize', 24, 'FontWeight', 'bold'); % Customize tick appearance
+
+% Add legend
+legend([startPoint, targetPoint], {'Start Point', 'Target'}, 'FontSize', 24, 'Location', 'best');
+
+% load FuzzySystemLongMemory
+tic
+Step_Counter = 0;
+
+%% live Loop
+while Step_Counter < 361
+    Step_Counter = Step_Counter + 1;
+    update_environment_parameters;
 %% Define some parameters
 h = Step_Counter ;
 x(h) = m2p * (X(1,h)); 
@@ -38,26 +97,12 @@ if (max(floor(h/skipframe_Lidar)*skipframe_Lidar,1) == h)
     % hold off;
 end
 
-%% Preference_MF
-if (max(floor(h/skipframe_MF)*skipframe_MF,1) == h)
-    figure(1)
-    subplot(2,3,6); 
-    shiftIndexLidar = round(X(5,h)/Dist_MF_L2F);
-    shiftIndexLidar = (shiftIndexLidar + (360*(shiftIndexLidar<1)) + (-360*(shiftIndexLidar>360)));
-    Preference_MF_plot = circshift(Preference_MF, -shiftIndexLidar);
-    polarplot([Preference_MF_plot; Preference_MF_plot(1)]);
-    % DD = zeros(1,360); 
-    % DD(round(Fuzzy_Local_Direction_ref+180)+1) = 1; 
-    % hold on; 
-    % polarplot(DD); 
-    % polarplot([Preference_MF_near; Preference_MF_near(1)]); 
-    % hold off;
-end
+
 
 %% Map
 if (max(floor(h/skipframe_map)*skipframe_map,1) == h)
-    % figure(2)
-    subplot(2,3,[1,2,4,5])
+    figure(1)
+    subplot(221)
     % axis(map_axix)
     hold on
 
@@ -106,32 +151,12 @@ if (max(floor(h/skipframe_map)*skipframe_map,1) == h)
     hold off
 end
 
-%% Report Debug Mode
-if ((Gazebo_Sim == 1) && (Debug_Mode == 1) && (max(floor(h/skipframe_Debug)*skipframe_Debug,1) == h))
-    Debug_msg = 'Debug_Mode: ';
-    Debug_msg = [Debug_msg, ' Heading = '];
-    Debug_msg = [Debug_msg, num2str(Robot.Heading)];
-    
-    Debug_msg = [Debug_msg, ' , refang = '];
-    Debug_msg = [Debug_msg, num2str(refang)];
-    
-    % Debug_msg = [Debug_msg, ' , argmaxang = '];
-    % Debug_msg = [Debug_msg, num2str(argmaxang)];
-    
-    % Debug_msg = [Debug_msg, ' , FLDF = '];
-    % Debug_msg = [Debug_msg, num2str(Fuzzy_Local_Direction_ref)];
-    
-    Debug_msg = [Debug_msg, ' , ntemp_w = '];
-    Debug_msg = [Debug_msg, num2str(ntemp_w)];
-    
-    Debug_msg = [Debug_msg, ' , Goal_Direction = '];
-    Debug_msg = [Debug_msg, num2str(Goal_Direction)];
-    
-    Debug_msg = [Debug_msg, ' , Goal_angle = '];
-    Debug_msg = [Debug_msg, num2str(Goal_angle)];
-    
-    disp(Debug_msg)
 end
 
-
-
+%% plot path
+subplot(2,3,[1,2,4,5])
+hold on
+plot_path = plot(m2p * (X(1,1:h)),m2p * (X(3,1:h)), 'LineWidth', 2, 'LineStyle', '--', 'color', 'black');
+hLegend = legend([startPoint, targetPoint, plot_path], {'Start Point', 'Target', 'Path'}, 'FontSize', 24, 'Location', 'best');
+set(hLegend, 'FontName', 'Times New Roman');
+% delete(lidar_line);

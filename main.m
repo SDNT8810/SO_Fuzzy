@@ -39,6 +39,14 @@ while Step_Counter < max_expected_size-Window_Size
     end
 end
 
+%% plot path
+subplot(2,3,[1,2,4,5])
+hold on
+plot_path = plot(m2p * (X(1,1:h)),m2p * (X(3,1:h)), 'LineWidth', 2, 'LineStyle', '--', 'color', 'black');
+hLegend = legend([startPoint, targetPoint, plot_path], {'Start Point', 'Target', 'Path'}, 'FontSize', 24, 'Location', 'best');
+set(hLegend, 'FontName', 'Times New Roman');
+delete(lidar_line);
+
 %% Publish stop velocity commands
 if (Gazebo_Sim == 1)
     velMsg.linear.x = 0;
@@ -49,7 +57,7 @@ end
 toc
 
 %% Save Data
-save FuzzySystemLongMemory MeanMat VariMat W RulesNum age_of_Rulls
+% save FuzzySystemLongMemory MeanMat VariMat W RulesNum age_of_Rulls
 
 %% End
 
