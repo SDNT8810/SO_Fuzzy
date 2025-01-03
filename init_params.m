@@ -39,7 +39,7 @@ Goal_Vector = zeros(2, max_expected_size);
 Goal_Vector_sim = zeros(2, Window_Size);
 
 %% Robot Parameters
-Lidar_Range = 1.1;
+Lidar_Range = 1;
 m = 2;
 Robot.m = m;
 Robot.Lidar_Range = Lidar_Range;

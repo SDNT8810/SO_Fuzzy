@@ -8,7 +8,7 @@ skipframe_MF = 5;
 skipframe_Lidar = 10;
 skipframe_Lidar_line = 5;
 skipframe_Debug = 10;
-skipframe_map = 30;
+skipframe_map = 245;
 
 map_x_max = max([x,m2p * X_g(1,1)]);
 map_x_min = min([x,-2 * m2p]);

@@ -6,7 +6,8 @@ tic
 Run_Timer = zeros(max_expected_size,1);
 
 %% live Loop
-while Step_Counter < max_expected_size-Window_Size
+% while Step_Counter < max_expected_size-Window_Size
+while Step_Counter < 247
     Step_Counter = Step_Counter + 1;
     Run_Timer(Step_Counter) = toc;
     

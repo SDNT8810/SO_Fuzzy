@@ -78,7 +78,7 @@ for i = 1:num_gaussians+1
 
     % Fill below the Gaussian to the MF_Lid value
     Filled = fill([fill_x, fliplr(fill_x)], [fill_y, zeros(size(fill_y))], ...
-        [0.3 0.3 0.3], 'FaceAlpha', 0.4, 'EdgeColor', 'none');
+        [0.3], 'FaceAlpha', 0.4, 'EdgeColor', 'none');
 end
 
 % Formatting
