@@ -1,0 +1,125 @@
+%% init
+clc
+figure(2)
+clf
+
+
+Dist_MF_L2F = 30;
+MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
+
+Num_MF_L2F = 360/Dist_MF_L2F;
+Membership_Lidar = zeros(2*Dist_MF_L2F+1 , Num_MF_L2F);
+MF_Lidar_ = zeros(Num_MF_L2F, 1);
+MF_L2F(:,1) = gaussmf(-Dist_MF_L2F:Dist_MF_L2F , [(Dist_MF_L2F/4)/sqrt(-2*log(0.5)), 0]); 
+Lidar_Augmented = @(x) [x(end-Dist_MF_L2F:end,1); x; x(1:Dist_MF_L2F,1)];
+Max_Lidar = sum(Lidar_Range * MF_L2F);
+MF_Lidar = @(Points360) Lidar2Fuzzy(Points360, Lidar_Augmented, Membership_Lidar, MF_Lidar_, Dist_MF_L2F, Num_MF_L2F, MF_L2F, Max_Lidar);
+
+% Parameters
+num_gaussians = 13; % Number of Gaussian filters
+Dist_MF_L2F = 30; % Distance between membership functions (angles)
+theta = linspace(0, 2*pi, 360); % 360 LiDAR angles
+MF_Lidar_Angle = (0:Dist_MF_L2F:359)'; % Centers of Gaussian filters in degrees
+MF_Lid = MF_Lidar(Points360Plot);
+MF_Lid(13) = MF_Lid(1);
+MF_Lidar_Angle(13) = 360;
+
+%% Plot Weighting
+gaussian_width = Dist_MF_L2F * 0.8; % Gaussian width
+i = 1;
+center_angle = MF_Lidar_Angle(i+2); % Center of the Gaussian filter
+shifted_theta = mod(theta - deg2rad(center_angle) + pi, 2*pi) - pi; % Periodic adjustment
+gaussian_shape = 0.5 + exp(-shifted_theta.^2 / (6 * (deg2rad(gaussian_width))^2));
+
+% Convert Gaussian shape to Cartesian
+x_gaussian = gaussian_shape .* cos(theta);
+y_gaussian = gaussian_shape .* sin(theta);
+Weighting = plot(x_gaussian, y_gaussian, 'blue--', 'LineWidth', 2.5); % Gaussian plot
+R = 1.5;
+hold on;
+
+%% Plot Gaussian filters (Mexican hat)
+gaussian_width = Dist_MF_L2F / 4; % Gaussian width
+for i = 1:num_gaussians
+    center_angle = MF_Lidar_Angle(i); % Center of the Gaussian filter
+    shifted_theta = mod(theta - deg2rad(center_angle) + pi, 2*pi) - pi; % Periodic adjustment
+    gaussian_shape = 0 + exp(-shifted_theta.^2 / (6 * (deg2rad(gaussian_width))^2));
+    
+    % Convert Gaussian shape to Cartesian
+    x_gaussian = gaussian_shape .* cos(theta);
+    y_gaussian = gaussian_shape .* sin(theta);
+    Guassians = plot(x_gaussian, y_gaussian, 'black-', 'LineWidth', 1.5); % Gaussian plot
+end
+
+%% fill
+% Parameters
+theta_circle = linspace(0, 2*pi, 500); % Circle outline
+r_circle = 1; % Radius of the base circle
+
+% Draw the reference circle
+reference_circle = plot(r_circle * cos(theta_circle), r_circle * sin(theta_circle), 'k--', 'LineWidth', 0.7);
+
+% Define angles for each Gaussian and map points
+num_angles = 360; % Total points for LiDAR
+theta = linspace(0, 2*pi, num_angles); % Circular angles
+x_values = theta; % X-axis values for Gaussian calculation
+
+% Loop over each Gaussian
+for i = 1:num_gaussians
+    % Define the Gaussian parameters
+    center_theta = deg2rad(MF_Lidar_Angle(i)); % Center of the Gaussian in radians
+    gaussian_shape = exp(-(x_values - center_theta).^2 / (6 * deg2rad(gaussian_width)^2)); % Gaussian function
+     % 0 + exp(-shifted_theta.^2 / (6 * (deg2rad(gaussian_width))^2));
+    % Determine the fill region height
+    fill_height = Lidar_Range - MF_Lid(i); % Scaled radius based on MF_Lid value
+    
+    % Convert Gaussian to polar coordinates
+    r_filled = min(gaussian_shape, fill_height); % Filled Gaussian radius
+    x_filled = r_filled .* cos(x_values); % X-coordinates for filled region
+    y_filled = r_filled .* sin(x_values); % Y-coordinates for filled region
+
+    % Fill the Gaussian on the circle
+    Inputs = fill([x_filled, 0], [y_filled, 0], [0.3 0.3 0.3], 'FaceAlpha', 0.3, 'EdgeColor', 'none');
+
+    % Plot the Gaussian outline
+    r_gaussian = gaussian_shape; % Full Gaussian radius
+    x_gaussian = r_gaussian .* cos(x_values); % X-coordinates for outline
+    y_gaussian = r_gaussian .* sin(x_values); % Y-coordinates for outline
+    % plot(x_gaussian, y_gaussian, 'black-', 'LineWidth', 1.5);
+end
+
+CenterPoint = plot(0, 0, 'o', 'MarkerFaceColor', 'r', 'MarkerEdgeColor', 'r', 'MarkerSize', 10); % Red circle for start
+
+center_angle = MF_Lidar_Angle(3); % Center of the Gaussian filter
+GoalDir = quiver(0, 0, R*cosd(center_angle), R*sind(center_angle), 0, 'r', 'LineWidth', 3, 'MaxHeadSize', .45);
+
+%% Formatting
+axis equal;
+hold off;
+
+title('Input weighting representation based on goal direction', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+% xlabel('X-axis', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+% ylabel('Y-axis', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+
+% Adjust the axes to ensure ruler-like appearance
+ax = gca; % Get current axes
+ax.XGrid = 'on';
+ax.YGrid = 'on';
+ax.GridColor = 'black'; % Grid color
+ax.GridAlpha = 1.0; % Grid transparency
+ax.LineWidth = 1.5; % Grid line thickness
+ax.GridLineStyle = '-'; % Dashed grid lines
+ax.GridAlpha = 0.04; % Transparency of grid lines
+
+% % Enable axis ticks and labels
+axis on;
+set(ax, 'TickDir', 'out', 'FontSize', 24, 'FontWeight', 'bold'); % Customize tick appearance
+
+box on
+axis([-1.1 1.2 -1.1 1.5]); % Adjust axis limits if needed
+
+hLegend = legend([GoalDir, Inputs, Weighting, reference_circle], {'Goal direction', 'Inputs', 'Weight', 'Reference circle'}, 'FontSize', 24, 'Location', 'best');
+set(hLegend, 'FontName', 'Times New Roman');
+
+
+

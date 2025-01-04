@@ -6,9 +6,9 @@ theta(h) = -X(5,h)*pi/180 ;
 
 skipframe_MF = 5;
 skipframe_Lidar = 10;
-skipframe_Lidar_line = 5;
+skipframe_Lidar_line = 4;
 skipframe_Debug = 10;
-skipframe_map = 245;
+skipframe_map = 20;
 
 map_x_max = max([x,m2p * X_g(1,1)]);
 map_x_min = min([x,-2 * m2p]);
@@ -84,13 +84,13 @@ if (max(floor(h/skipframe_map)*skipframe_map,1) == h)
     % delete(lidar_circle);
     % lidar_circle = plot(c*sin(t)+(x(h)),c*cos(t)+y(h),':b','linewidth',0.8);
     lidar_line(360) = line([0; 0.1], [0.1; 0.1], 'color', 'blue');
-    if (h == 360)
-        disp('salam')
-        for lidar_index = 1 : skipframe_Lidar_line : 360
-                len = (Lidar_Range-Points360Plot(lidar_index))*m2p;
-                lidar_line_mid(lidar_index) = line([x(h);x(h)+len*sind(lidar_index+90)],[y(h);y(h)+len*cosd(lidar_index+90)], 'color', 'blue', 'LineWidth', lw/10);
-        end
-    end
+    % if (h == 360)
+    %     disp('salam')
+    %     for lidar_index = 1 : skipframe_Lidar_line : 360
+    %             len = (Lidar_Range-Points360Plot(lidar_index))*m2p;
+    %             lidar_line_mid(lidar_index) = line([x(h);x(h)+len*sind(lidar_index+90)],[y(h);y(h)+len*cosd(lidar_index+90)], 'color', 'blue', 'LineWidth', lw/10);
+    %     end
+    % end
     delete(lidar_line);
     for lidar_index = 1 : skipframe_Lidar_line : 360
             len = (Lidar_Range-Points360Plot(lidar_index))*m2p;

@@ -22,7 +22,7 @@ V = 0.25;
 Omega = 4 * pi;
 x_0 = .1;
 x_dot_0 = V;
-y_0 = .1;
+y_0 = .3;
 y_dot_0 = V;
 theta_0 = 0;
 theta_dot_0 = Omega;
@@ -30,7 +30,7 @@ X0 = [x_0, x_dot_0, y_0, y_dot_0, theta_0, theta_dot_0]';
 
 %% Init State Recorder Matrixes
 X = X0 + zeros(length(X0), max_expected_size);
-X_g = [1.5;1.5;0] + zeros(3, max_expected_size);
+X_g = [1.5;1.6;0] + zeros(3, max_expected_size);
 Xd0 = [X_g(1), x_dot_0, X_g(2), y_dot_0, X_g(3), theta_dot_0]';
 Xd = Xd0 + zeros(length(X0), max_expected_size);
 Dist2Goal = dist2goal([X(1,1), X(3,1)],X_g) + zeros(1, max_expected_size);
@@ -39,7 +39,7 @@ Goal_Vector = zeros(2, max_expected_size);
 Goal_Vector_sim = zeros(2, Window_Size);
 
 %% Robot Parameters
-Lidar_Range = 1;
+Lidar_Range = 0.7;
 m = 2;
 Robot.m = m;
 Robot.Lidar_Range = Lidar_Range;
@@ -129,6 +129,8 @@ else
     subplot(2,3,[1,2,4,5])
     clf
     map_rgb = imread('maps/simple.png');
+    % map_rgb = imread('maps/Room_map.png');
+    % map_rgb = imread('maps/star_300.png');
     subplot(2,3,[1,2,4,5])
     map_bin = imbinarize(map_rgb, 0.95);
     map = map_bin(:,:,1);
