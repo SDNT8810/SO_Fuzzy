@@ -1,9 +1,10 @@
 %% init
 clc
-% clf
 figure(2)
+clf
+
 Dist_MF_L2F = 30;
-MF_Lidar_Angle_ = (0:Dist_MF_L2F:359)';
+% MF_Lidar_Angle_ = (0:Dist_MF_L2F:359)';
 MF_Lidar_Angle_ = MF_Lidar_Angle;
 MF_Lid_ = MF_Lid;
 Num_MF_L2F = 360/Dist_MF_L2F;
@@ -19,7 +20,7 @@ r_circle = 1; % Radius of the circle
 num_gaussians = Num_MF_L2F; % Number of Gaussian filters
 Dist_MF_L2F = 30; % Distance between membership functions (angles)
 theta = linspace(0, 2*pi, 360); % 360 LiDAR angles
-MF_Lidar_Angle_ = (0:Dist_MF_L2F:359)'; % Centers of Gaussian filters in degrees
+% MF_Lidar_Angle_ = (0:Dist_MF_L2F:359)'; % Centers of Gaussian filters in degrees
 MF_Lid_ = MF_Lidar(Points360Plot);
 MF_Lid_(13) = MF_Lid_(1);
 MF_Lidar_Angle_(13) = 360;
@@ -31,7 +32,7 @@ theta_circle = linspace(0, 2*pi, 500);
 plot(r_circle * cos(theta_circle), r_circle * sin(theta_circle), 'k--', 'LineWidth', 1);
 
 for lidar_index = 1 : 1 : 360
-    len = (Lidar_Range-Points360Plot(lidar_index));
+    len = (Lidar_Range-Points360Plot(lidar_index))/Lidar_Range;
     lidar_line(lidar_index) = line([0;len*sind(lidar_index+90)],[0;len*cosd(lidar_index+90)], 'color', 'blue', 'LineWidth', lw/10);
 end
 
@@ -40,8 +41,21 @@ gaussian_width = Dist_MF_L2F / 4; % Gaussian width
 for i = 1:num_gaussians
     center_angle = MF_Lidar_Angle_(i); % Center of the Gaussian filter
     shifted_theta = mod(theta - deg2rad(center_angle) + pi, 2*pi) - pi; % Periodic adjustment
-    gaussian_shape = 1 + exp(-shifted_theta.^2 / (6 * (deg2rad(gaussian_width))^2));
+    gaussian_shape = 0.0 + exp(-shifted_theta.^2 / (6 * (deg2rad(gaussian_width))^2));
     
+    % Convert Gaussian shape to Cartesian
+    x_gaussian = gaussian_shape .* cos(theta);
+    y_gaussian = gaussian_shape .* sin(theta);
+    plot(x_gaussian, y_gaussian, 'black-', 'LineWidth', 1.5); % Gaussian plot
+end
+
+% Plot Gaussian filters (Mexican hat)
+gaussian_width = Dist_MF_L2F / 4; % Gaussian width
+for i = 1:num_gaussians
+    center_angle = MF_Lidar_Angle_(i); % Center of the Gaussian filter
+    shifted_theta = mod(theta - deg2rad(center_angle) + pi, 2*pi) - pi; % Periodic adjustment
+    gaussian_shape = 1.0 + exp(-shifted_theta.^2 / (6 * (deg2rad(gaussian_width))^2));
+
     % Convert Gaussian shape to Cartesian
     x_gaussian = gaussian_shape .* cos(theta);
     y_gaussian = gaussian_shape .* sin(theta);
@@ -59,9 +73,9 @@ title('Feature Reduction Concept: 360 LiDAR Points to 13 Features');
 
 hold off;
 
-title('Flattened Gaussian Filters for Feature Reduction', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
-xlabel('X-axis', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
-ylabel('Y-axis', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+title('Flattened Gaussian Filters for Feature Reduction', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+xlabel('X-axis', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+ylabel('Y-axis', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
 
 % Adjust the axes to ensure ruler-like appearance
 ax = gca; % Get current axes
@@ -75,7 +89,7 @@ ax.GridAlpha = 0.1; % Transparency of grid lines
 
 % % Enable axis ticks and labels
 axis on;
-set(ax, 'TickDir', 'out', 'FontSize', 24, 'FontWeight', 'bold'); % Customize tick appearance
+set(ax, 'TickDir', 'out', 'FontSize', FontSize, 'FontWeight', 'bold'); % Customize tick appearance
 
 box on
 
@@ -102,7 +116,7 @@ for i = 1:num_gaussians+1
 end
 
 for i = 1 : 360
-    len = (Lidar_Range-Points360Plot(i));
+    len = (Lidar_Range-Points360Plot(i))/Lidar_Range;
     blueLine = line([i;i],[0;len], 'color', [0 0.7 1], 'LineWidth', lw/4);
 end
 
@@ -129,13 +143,13 @@ grid on;
 % ylabel('Gaussian Weight');
 title('Flattened Gaussian Filters for Feature Reduction');
 axis([0 360 0 1]); % Adjust axis limits if needed
-hLegend = legend([blueLine, Filled, Gaussian], {'Input', 'Output', 'Gaussian'}, 'FontSize', 24, 'Location', 'best');
+hLegend = legend([blueLine, Filled, Gaussian], {'Input', 'Output', 'Gaussian'}, 'FontSize', FontSize, 'Location', 'best');
 set(hLegend, 'FontName', 'Times New Roman');
 hold off;
 
-title('Flattened Gaussian Filters for Feature Reduction', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
-xlabel('LiDAR Angle (degrees)', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
-ylabel('Gaussian Weight', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+title('Flattened Gaussian Filters for Feature Reduction', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+xlabel('LiDAR Angle (degrees)', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+ylabel('Gaussian Weight', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
 
 % Adjust the axes to ensure ruler-like appearance
 ax = gca; % Get current axes
@@ -149,9 +163,11 @@ ax.GridAlpha = 0.01; % Transparency of grid lines
 
 % Enable axis ticks and labels
 axis on;
-set(ax, 'TickDir', 'out', 'FontSize', 24, 'FontWeight', 'bold'); % Customize tick appearance
+set(ax, 'TickDir', 'out', 'FontSize', FontSize, 'FontWeight', 'bold'); % Customize tick appearance
 
 box on
 
 
+Node_1_Output = MF_Lid_;
+Node_1_Input = Points360Plot;
 

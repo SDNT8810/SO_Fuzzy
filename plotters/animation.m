@@ -28,9 +28,9 @@ lw = 5;
 rectangle('Position', [0.5, 0.5, rows, cols], 'EdgeColor', 'black', 'LineWidth', 5);
 
 % Add title and axis labels
-title(['Time: ', num2str(T_s * Step_Counter)], 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
-xlabel('X-axis (cm)', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
-ylabel('Y-axis (cm)', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+title(['Time: ', num2str(T_s * Step_Counter)], 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+xlabel('X-axis (cm)', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+ylabel('Y-axis (cm)', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
 
 % Adjust the axes to ensure ruler-like appearance
 ax = gca; % Get current axes
@@ -44,10 +44,10 @@ ax.GridAlpha = 0.05; % Transparency of grid lines
 
 % Enable axis ticks and labels
 axis on;
-set(ax, 'TickDir', 'out', 'FontSize', 24, 'FontWeight', 'bold'); % Customize tick appearance
+set(ax, 'TickDir', 'out', 'FontSize', FontSize, 'FontWeight', 'bold'); % Customize tick appearance
 
 % Add legend
-legend([startPoint, targetPoint], {'Start Point', 'Target'}, 'FontSize', 24, 'Location', 'best');
+legend([startPoint, targetPoint], {'Start Point', 'Target'}, 'FontSize', FontSize, 'Location', 'best');
 
 % load FuzzySystemLongMemory
 tic
@@ -117,7 +117,7 @@ while Step_Counter < 730
                 lidar_line(lidar_index) = line([x(h);x(h)+len*sind(lidar_index+90)],[y(h);y(h)+len*cosd(lidar_index+90)], 'color', 'blue', 'LineWidth', lw/10);
         end
         title(['Time: ',num2str(T_s*Step_Counter)]);
-        hLegend = legend([startPoint, targetPoint], {'Start Point', 'Target'}, 'FontSize', 24, 'Location', 'best');
+        hLegend = legend([startPoint, targetPoint], {'Start Point', 'Target'}, 'FontSize', FontSize, 'Location', 'best');
         set(hLegend, 'FontName', 'Times New Roman');
         drawnow;% pause(0.001);
         hold off
@@ -127,6 +127,6 @@ end
 %% plot path
 hold on
 plot_path = plot(m2p * (X(1,1:h)),m2p * (X(3,1:h)), 'LineWidth', 2, 'LineStyle', '--', 'color', 'black');
-hLegend = legend([startPoint, targetPoint, plot_path], {'Start Point', 'Target', 'Path'}, 'FontSize', 24, 'Location', 'best');
+hLegend = legend([startPoint, targetPoint, plot_path], {'Start Point', 'Target', 'Path'}, 'FontSize', FontSize, 'Location', 'best');
 set(hLegend, 'FontName', 'Times New Roman');
 % delete(lidar_line);

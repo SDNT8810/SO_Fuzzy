@@ -56,9 +56,9 @@ ylabel('Y-axis');
 
 hold off;
 
-title('Feature Reduction Concept', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
-xlabel('X-axis', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
-ylabel('Y-axis', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+title('Feature Reduction Concept', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+xlabel('X-axis', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+ylabel('Y-axis', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
 
 % Adjust the axes to ensure ruler-like appearance
 ax = gca; % Get current axes
@@ -72,7 +72,7 @@ ax.GridAlpha = 0.1; % Transparency of grid lines
 
 % % Enable axis ticks and labels
 axis on;
-set(ax, 'TickDir', 'out', 'FontSize', 24, 'FontWeight', 'bold'); % Customize tick appearance
+set(ax, 'TickDir', 'out', 'FontSize', FontSize, 'FontWeight', 'bold'); % Customize tick appearance
 
 box on
 axis(1.1*[-2 2 -2 2]); % Adjust axis limits if needed

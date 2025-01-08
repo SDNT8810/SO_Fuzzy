@@ -125,7 +125,7 @@ if (Gazebo_Sim == 1)
 
 else
     % Lidar_Range = 2;
-    % figure(2)
+    figure(1)
     subplot(2,3,[1,2,4,5])
     clf
     map_rgb = imread('maps/simple.png');
@@ -164,6 +164,8 @@ x = zeros(1,max_expected_size);
 y = zeros(1,max_expected_size);
 theta = zeros(1,max_expected_size);
 
+FontSize = 36;
+
 lidar_index = 360;
 lidar_line(lidar_index) = line([0; 0.1], [0.1; 0.1], 'color', 'blue');
 delete(lidar_line);
@@ -176,9 +178,9 @@ lw = 5;
 rectangle('Position', [0.5, 0.5, rows, cols], 'EdgeColor', 'black', 'LineWidth', 5);
 
 % Add title and axis labels
-title(['Time: ', num2str(T_s * Step_Counter)], 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
-xlabel('X-axis (cm)', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
-ylabel('Y-axis (cm)', 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+title(['Time: ', num2str(T_s * Step_Counter)], 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+xlabel('X-axis (cm)', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
+ylabel('Y-axis (cm)', 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Times New Roman', 'Color', 'black');
 
 % Adjust the axes to ensure ruler-like appearance
 ax = gca; % Get current axes
@@ -192,10 +194,10 @@ ax.GridAlpha = 0.05; % Transparency of grid lines
 
 % Enable axis ticks and labels
 axis on;
-set(ax, 'TickDir', 'out', 'FontSize', 24, 'FontWeight', 'bold'); % Customize tick appearance
+set(ax, 'TickDir', 'out', 'FontSize', FontSize, 'FontWeight', 'bold'); % Customize tick appearance
 
 % Add legend
-legend([startPoint, targetPoint], {'Start Point', 'Target'}, 'FontSize', 24, 'Location', 'best');
+legend([startPoint, targetPoint], {'Start Point', 'Target'}, 'FontSize', FontSize, 'Location', 'best');
 
 %% RL Parameters
 Long_Memory_Experience.Window_Size = Window_Size;

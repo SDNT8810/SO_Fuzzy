@@ -44,7 +44,7 @@ end
 subplot(2,3,[1,2,4,5])
 hold on
 plot_path = plot(m2p * (X(1,1:h)),m2p * (X(3,1:h)), 'LineWidth', 2, 'LineStyle', '--', 'color', 'black');
-hLegend = legend([startPoint, targetPoint, plot_path], {'Start Point', 'Target', 'Path'}, 'FontSize', 24, 'Location', 'best');
+hLegend = legend([startPoint, targetPoint, plot_path], {'Start Point', 'Target', 'Path'}, 'FontSize', FontSize, 'Location', 'best');
 set(hLegend, 'FontName', 'Times New Roman');
 delete(lidar_line);
 

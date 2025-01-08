@@ -98,9 +98,9 @@ if (max(floor(h/skipframe_map)*skipframe_map,1) == h)
     end
     % plot(x,y) ;
     % title(['Time: ',num2str(T_s*Step_Counter), ', FLDR: ', num2str(Fuzzy_Local_Direction_ref)])
-    % title(['Time: ',num2str(T_s*Step_Counter)], 'FontSize', 24, 'FontWeight', 'bold', 'FontName', 'Arial', 'Color', 'black');
+    % title(['Time: ',num2str(T_s*Step_Counter)], 'FontSize', FontSize, 'FontWeight', 'bold', 'FontName', 'Arial', 'Color', 'black');
     title(['Time: ',num2str(T_s*Step_Counter)]);
-    hLegend = legend([startPoint, targetPoint], {'Start Point', 'Target'}, 'FontSize', 24, 'Location', 'best');
+    hLegend = legend([startPoint, targetPoint], {'Start Point', 'Target'}, 'FontSize', FontSize, 'Location', 'best');
     set(hLegend, 'FontName', 'Times New Roman');
     drawnow;% pause(0.001);
     hold off
