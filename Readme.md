@@ -51,7 +51,7 @@ The system implements a novel three-layer deep fuzzy architecture:
 │  Layer 2: Contextual Feature Integration                     │
 │  ┌─────────────────┐    ┌─────────────────┐                  │
 │  │   Node 2:       │    │   Node 3:       │                  │
-│  │   13x1 + Goal   │    │   13x1 + Robot  │                  │
+│  │   13x1 + Goal   │    │   13x1 + Robot  │───▶ 14x2 Output  │
 │  │   Direction     │    │   Heading       │                  │
 │  └─────────────────┘    └─────────────────┘                  │
 ├──────────────────────────────────────────────────────────────┤
@@ -59,7 +59,7 @@ The system implements a novel three-layer deep fuzzy architecture:
 │  ┌────────────────────────────────────────┐                  │
 │  │  Fuzzy Inference Engine                │                  │
 │  │  ┌──────────────┐    ┌─────────────┐   │                  │
-│  │  │  Linear Vel. │    │ Angular Vel.│   │                  │
+│  │  │  Linear Vel. │    │ Angular Vel.│   │───▶ 2x1 Output  │
 │  │  │     (v)      │    │     (ω)     │   │                  │
 │  │  └──────────────┘    └─────────────┘   │                  │
 │  └────────────────────────────────────────┘                  │
