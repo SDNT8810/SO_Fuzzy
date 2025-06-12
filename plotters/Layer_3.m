@@ -4,6 +4,8 @@ figure(2);
 clf
 hold on;
 
+% Add functions directory to path
+addpath('../functions');
 
 % Example Data
 Node_2 = Node_2_Output; % Replace with your actual Node_2 data

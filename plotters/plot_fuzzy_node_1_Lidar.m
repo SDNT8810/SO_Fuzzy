@@ -2,6 +2,10 @@
 clc
 clf
 figure(2)
+
+% Add functions directory to path
+addpath('../functions');
+
 Dist_MF_L2F = 30;
 MF_Lidar_Angle = (0:Dist_MF_L2F:359)';
 

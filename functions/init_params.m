@@ -164,7 +164,7 @@ x = zeros(1,max_expected_size);
 y = zeros(1,max_expected_size);
 theta = zeros(1,max_expected_size);
 
-FontSize = 36;
+FontSize = 12;
 
 lidar_index = 360;
 lidar_line(lidar_index) = line([0; 0.1], [0.1; 0.1], 'color', 'blue');

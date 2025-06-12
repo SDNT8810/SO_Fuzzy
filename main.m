@@ -1,5 +1,9 @@
 %% initializing
 clear; clf; clc; % close all;
+load memory.mat
+
+% Add functions directory to path
+addpath('functions');
 
 init_params
 tic
@@ -58,7 +62,7 @@ end
 toc
 
 %% Save Data
-% save FuzzySystemLongMemory MeanMat VariMat W RulesNum age_of_Rulls
+save FuzzySystemLongMemory MeanMat VariMat W RulesNum age_of_Rulls
 
 %% End
 

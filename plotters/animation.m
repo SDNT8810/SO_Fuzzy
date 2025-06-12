@@ -1,6 +1,10 @@
 %% initializing
 % clear; clf; clc; % close all;
 clc
+
+% Add functions directory to path
+addpath('../functions');
+
 %% Environmental Parameters
 
 % subplot(121)

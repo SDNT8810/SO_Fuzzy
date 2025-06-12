@@ -4,6 +4,9 @@ figure(2)
 clf
 subplot(221)
 
+% Add functions directory to path
+addpath('../functions');
+
 Robot_Heading = 65;
 
 Dist_MF_L2F = 30;

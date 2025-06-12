@@ -3,6 +3,9 @@ clc
 figure(2)
 clf
 
+% Add functions directory to path
+addpath('../functions');
+
 %% Parameters
 subplot(221)
 
