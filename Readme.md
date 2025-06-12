@@ -59,7 +59,7 @@ The system implements a novel three-layer deep fuzzy architecture:
 │  ┌────────────────────────────────────────┐                  │
 │  │  Fuzzy Inference Engine                │                  │
 │  │  ┌──────────────┐    ┌─────────────┐   │                  │
-│  │  │  Linear Vel. │    │ Angular Vel.│   │───▶ 2x1 Output  │
+│  │  │  Linear Vel. │    │ Angular Vel.│   │───▶ 2x1 Output   │
 │  │  │     (v)      │    │     (ω)     │   │                  │
 │  │  └──────────────┘    └─────────────┘   │                  │
 │  └────────────────────────────────────────┘                  │
